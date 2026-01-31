@@ -10,7 +10,7 @@
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:e2e": "playwright test",
-    "serve:e2e": "mkdir -p .serve/website-portfolio && cp -r out/* .serve/website-portfolio/ && cp serve.json .serve/ && serve .serve -l ${PORT:-3006} -c serve.json"
+    "serve:e2e": "mkdir -p .serve/website-portfolio && cp -r out/. .serve/website-portfolio/ && cp serve.json .serve/ && serve .serve -p ${PORT:-3006}"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",

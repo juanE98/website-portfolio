@@ -11,7 +11,8 @@ export default defineConfig({
   reporter: process.env.CI ? 'github' : 'html',
   timeout: 30000,
   use: {
-    baseURL: `http://localhost:${PORT}/website-portfolio`,
+    // Base URL without path - tests use relative paths from here
+    baseURL: `http://localhost:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -26,8 +27,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run build && npm run serve:e2e',
-    url: `http://localhost:${PORT}/website-portfolio`,
+    // In CI, build already ran separately - just serve. Locally, build first.
+    command: process.env.CI
+      ? 'npm run serve:e2e'
+      : 'npm run build && npm run serve:e2e',
+    url: `http://localhost:${PORT}/website-portfolio/`,
     reuseExistingServer: !process.env.CI,
     timeout: 180000,
   },
