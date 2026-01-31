@@ -1,0 +1,95 @@
+@use "../../styles/variables" as *;
+
+.carousel {
+  overflow: hidden;
+  padding: 0.2em 0;
+  width: 100%;
+  max-width: 1400px;
+  background: $page-background;
+  position: relative;
+  margin: 0 auto;
+}
+
+.carousel:before,
+.carousel:after {
+  position: absolute;
+  top: 0;
+  width: 5em;
+  height: 100%;
+  content: "";
+  z-index: 2;
+}
+
+.carousel:before {
+  left: 0;
+}
+
+.carousel:after {
+  right: 0;
+}
+
+.scrollContainer {
+  overflow: hidden;
+  width: 100%;
+}
+
+.scrollTrack {
+  display: flex;
+  animation: scroll 30s linear infinite;
+}
+
+.scrollItem {
+  height: 28em;
+  width: 280px;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-right: 2rem;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-280px * 17 - 2rem * 17));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .carousel {
+    padding: 0.1em 0;
+    width: 98%;
+  }
+
+  .scrollItem {
+    height: 20em;
+    width: 200px;
+    margin-right: 1rem;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-200px * 17 - 1rem * 17));
+    }
+  }
+}
+
+@media (max-width: 414px) {
+  .scrollItem {
+    height: 18em;
+    width: 180px;
+    margin-right: 0.75rem;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(-180px * 17 - 0.75rem * 17));
+    }
+  }
+}

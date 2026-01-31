@@ -1,0 +1,63 @@
+@use "../../styles/variables" as *;
+
+.footer {
+  text-align: center;
+  padding: 2.5em;
+  background-color: $page-background;
+}
+
+.socialIcons {
+  a {
+    margin: 0 10px;
+  }
+
+  i {
+    font-size: 1.2em;
+    color: $text;
+    transition: color 0.3s ease-in-out;
+  }
+}
+
+.copyright {
+  margin-top: 1em;
+  color: $text;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .socialIcons {
+    i {
+      transition: none;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .footer {
+    text-align: center;
+    margin: 0 auto;
+    padding: 1.5em 0.5em;
+  }
+
+  .socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: 0.8em;
+    font-size: 2.5em;
+  }
+
+  .copyright {
+    margin-top: 0.8em;
+  }
+}
+
+@media (max-width: 414px) {
+  .footer {
+    padding: 1.25em 0.25em;
+  }
+
+  .socialIcons {
+    gap: 1em;
+    font-size: 2.2em;
+  }
+}

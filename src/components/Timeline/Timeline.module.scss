@@ -1,0 +1,314 @@
+@use "../../styles/variables" as *;
+
+.timelineContainer {
+  max-width: 1400px;
+  margin: 1em auto 0;
+  padding: 1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.timelineTitle {
+  color: $text;
+}
+
+.timeline {
+  position: relative;
+  margin: 2em auto;
+  padding: 2em 0;
+  width: 100%;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    background-color: $blue-theme;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+}
+
+.timelineItem {
+  margin: 2em 0;
+  position: relative;
+  width: 50%;
+  z-index: 2;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.left {
+  left: 0;
+  padding-right: 3em;
+}
+
+.right {
+  left: 50%;
+  padding-left: 3em;
+  transform: translateX(100%);
+}
+
+.content {
+  padding: 2em;
+  background-color: #333;
+  position: relative;
+  border-radius: 6px;
+  color: $text;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  margin: 0 2em;
+
+  h3 {
+    margin: 0 0 0.5em;
+    color: $text;
+  }
+
+  h4 {
+    margin: 0 0 0.5em;
+    color: $blue-theme;
+    font-weight: normal;
+  }
+
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
+}
+
+.circle {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  background: radial-gradient(circle, #1c6568 15%, $blue-theme 100%);
+  border-radius: 50%;
+  top: 50%;
+  left: auto;
+  right: -12.5px;
+  transform: translateY(-50%);
+  z-index: 3;
+  border: 3px solid $blue-theme;
+}
+
+.right .circle {
+  left: -12.5px;
+  right: auto;
+}
+
+// Content arrow styling
+.left .content::after {
+  content: '';
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 0 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent #333;
+}
+
+.right .content::after {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 10px 10px 10px 0;
+  border-style: solid;
+  border-color: transparent #333 transparent transparent;
+}
+
+// Scroll visibility animations
+.timelineItem:global(.in-view) {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.left:global(.in-view) {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.right:global(.in-view) {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+.left:global(.out-of-view) {
+  animation: slideOutLeft 0.5s ease-in forwards;
+}
+
+.right:global(.out-of-view) {
+  animation: slideOutRight 0.5s ease-in forwards;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+// Mobile breakpoints
+@media screen and (max-width: 768px) {
+  .timelineContainer {
+    max-width: 100%;
+    padding: 0 0.5em;
+    margin: 0.8em auto 0;
+  }
+
+  .timeline::after {
+    left: 31px;
+  }
+
+  .timelineItem {
+    width: 100%;
+    margin: 2em 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .left,
+  .right {
+    left: 0 !important;
+    padding-left: 50px;
+    padding-right: 10px;
+    transform: none !important;
+  }
+
+  .content {
+    padding: 1.5em;
+    margin: 0;
+  }
+
+  .circle {
+    width: 22px;
+    height: 22px;
+    left: 20px;
+    right: auto;
+  }
+
+  .left .circle,
+  .right .circle {
+    left: 20px;
+  }
+
+  .left .content::after,
+  .right .content::after {
+    left: -10px;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent #333 transparent transparent;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .timelineContainer {
+    margin-top: 1em;
+    padding: 0 0.25em;
+  }
+
+  .timeline::after {
+    left: 21px;
+  }
+
+  .timelineItem {
+    margin: 1.5em 0;
+    opacity: 1;
+    transform: none;
+  }
+
+  .left,
+  .right {
+    left: 0 !important;
+    padding-left: 40px;
+    padding-right: 5px;
+    transform: none !important;
+  }
+
+  .content {
+    padding: 1em;
+  }
+
+  .circle {
+    width: 20px;
+    height: 20px;
+    left: 10px;
+  }
+
+  .left .circle,
+  .right .circle {
+    left: 10px;
+  }
+}
+
+@media (max-width: 414px) {
+  .timeline::after {
+    left: 15px;
+  }
+
+  .left,
+  .right {
+    padding-left: 35px;
+    padding-right: 0;
+  }
+
+  .circle {
+    width: 18px;
+    height: 18px;
+    left: 6px;
+  }
+
+  .left .circle,
+  .right .circle {
+    left: 6px;
+  }
+
+  .content {
+    padding: 0.85em;
+
+    h3 {
+      font-size: 1.2em;
+    }
+
+    h4 {
+      font-size: 1em;
+    }
+  }
+}

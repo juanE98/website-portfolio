@@ -1,0 +1,64 @@
+'use client';
+
+import { useState, useEffect, useRef } from 'react';
+
+interface UseTypingAnimationOptions {
+  texts: string[];
+  typeSpeed?: number;
+  deleteSpeed?: number;
+  pauseDuration?: number;
+}
+
+export function useTypingAnimation({
+  texts,
+  typeSpeed = 100,
+  deleteSpeed = 75,
+  pauseDuration = 1000,
+}: UseTypingAnimationOptions) {
+  const [currentText, setCurrentText] = useState('');
+  const textIndexRef = useRef(0);
+  const charIndexRef = useRef(0);
+  const isDeletingRef = useRef(false);
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    const typingInterval = setInterval(() => {
+      if (isPausedRef.current) {
+        return;
+      }
+
+      const currentFullText = texts[textIndexRef.current];
+
+      if (!isDeletingRef.current) {
+        // Typing
+        const newCharIndex = charIndexRef.current + 1;
+        setCurrentText(currentFullText.substring(0, newCharIndex));
+        charIndexRef.current = newCharIndex;
+
+        if (newCharIndex === currentFullText.length) {
+          isPausedRef.current = true;
+          setTimeout(() => {
+            isDeletingRef.current = true;
+            isPausedRef.current = false;
+          }, pauseDuration);
+        }
+      } else {
+        // Deleting
+        const newCharIndex = charIndexRef.current - 1;
+        setCurrentText(currentFullText.substring(0, newCharIndex));
+        charIndexRef.current = newCharIndex;
+
+        if (newCharIndex === 0) {
+          isDeletingRef.current = false;
+          textIndexRef.current = (textIndexRef.current + 1) % texts.length;
+        }
+      }
+    }, isDeletingRef.current ? deleteSpeed : typeSpeed);
+
+    return () => {
+      clearInterval(typingInterval);
+    };
+  }, [texts, typeSpeed, deleteSpeed, pauseDuration]);
+
+  return currentText;
+}

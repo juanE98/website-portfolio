@@ -1,0 +1,207 @@
+@use "../../styles/variables" as *;
+
+$accent: #ffa213;
+$hover: #313131;
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+  background: $page-background;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1010;
+  height: 55px;
+  transition: transform 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .header {
+    transition: none;
+  }
+}
+
+.hidden {
+  transform: translateY(-100%);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  max-height: calc(55px - 1em);
+  height: auto;
+  width: auto;
+  cursor: pointer;
+  object-fit: contain;
+}
+
+.desktopMenuNav ul {
+  display: flex;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.desktopMenuNav ul li {
+  color: $text;
+  font-size: 18px;
+  font-family: gugi, serif;
+  margin-left: 2.5em;
+  cursor: pointer;
+  transition: color 0.3s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  .desktopMenuNav ul li {
+    transition: none;
+  }
+}
+
+.desktopMenuNav ul li:hover {
+  color: $blue-theme;
+}
+
+.menuIconOpen {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  color: $text;
+  font-size: 28px;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  z-index: 1011;
+}
+
+.mobileMenuPanel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: #2A2A2A !important;
+  background-color: #2A2A2A !important;
+  padding: 1em;
+  padding-top: 1em;
+  z-index: 1012;
+  transition: right 0.4s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+  border-left: 1px solid rgba(145, 211, 214, 0.2);
+  transform: none !important;
+  -webkit-transform: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobileMenuPanel {
+    transition: none;
+  }
+  .mobileMenuPanel.active {
+    right: 0;
+  }
+}
+
+.mobileMenuPanel.active {
+  right: 0;
+}
+
+.menuIconClose {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  color: $text;
+  font-size: 30px;
+  cursor: pointer;
+  width: 100%;
+  padding: 0.5em 0;
+  margin-bottom: 1em;
+}
+
+.menuIconClose i:hover {
+  color: $blue-theme;
+}
+
+.mobileMenuPanel ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  background-color: transparent;
+  flex: 1;
+}
+
+.mobileMenuPanel ul li {
+  color: $text;
+  font-size: 1.3em;
+  font-family: gugi, serif;
+  padding: 0.8em 0em;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: color 0.3s ease-in-out;
+  background-color: transparent;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .mobileMenuPanel ul li {
+    transition: none;
+  }
+}
+
+.mobileMenuPanel ul li:hover {
+  color: $blue-theme;
+}
+
+@media screen and (max-width: 768px) {
+  .desktopMenuNav {
+    display: none;
+  }
+  .menuIconOpen {
+    display: flex;
+  }
+  .header {
+    height: 50px;
+    padding: 0 0.75em;
+  }
+  .logo {
+    max-height: calc(50px - 0.5em);
+  }
+  .mobileMenuPanel {
+    padding-top: 0.5em;
+  }
+  .menuIconClose {
+    font-size: 28px;
+    padding: 0.4em 0;
+    margin-bottom: 0.8em;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .mobileMenuPanel {
+    display: none;
+  }
+  .menuIconOpen {
+    display: none;
+  }
+}
+
+@media (max-width: 414px) {
+  .header {
+    height: 48px;
+    padding: 0 0.5em;
+  }
+
+  .logo {
+    max-height: calc(48px - 0.5em);
+  }
+
+  .menuIconOpen {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
