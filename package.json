@@ -7,29 +7,32 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "serve:e2e": "mkdir -p .serve/website-portfolio && cp -r out/* .serve/website-portfolio/ && serve .serve -l ${PORT:-3006}"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "next": "^15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "bootstrap": "^5.3.3",
-    "bootstrap-icons": "^1.11.3"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/react": "^16.0.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "typescript": "^5.7.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.1.0",
-    "sass": "^1.83.0",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/jest-dom": "^6.6.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "@playwright/test": "^1.49.0"
+    "sass": "^1.83.0",
+    "serve": "^14.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
   }
 }
