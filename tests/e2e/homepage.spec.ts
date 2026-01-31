@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should load the page with correct title', async ({ page }) => {
@@ -22,22 +22,22 @@ test.describe('Homepage', () => {
   });
 
   test('should display the home section', async ({ page }) => {
-    const homeSection = page.locator('section#home');
+    const homeSection = page.locator('#home');
     await expect(homeSection).toBeVisible();
   });
 
   test('should display the technologies section', async ({ page }) => {
-    const techSection = page.locator('section#technologies');
+    const techSection = page.locator('#technologies');
     await expect(techSection).toBeVisible();
   });
 
   test('should display the about section', async ({ page }) => {
-    const aboutSection = page.locator('section#about');
+    const aboutSection = page.locator('#about');
     await expect(aboutSection).toBeVisible();
   });
 
   test('should display the experience section', async ({ page }) => {
-    const experienceSection = page.locator('section#experience');
+    const experienceSection = page.locator('#experience');
     await expect(experienceSection).toBeVisible();
   });
 
@@ -47,42 +47,45 @@ test.describe('Homepage', () => {
   });
 
   test('should display the logo image', async ({ page }) => {
-    const logo = page.locator('img[alt="Logo"]');
+    const logo = page.locator('header img[alt="Logo"]');
     await expect(logo).toBeVisible();
   });
 
   test('should display navigation items', async ({ page }) => {
     // Check navigation text exists somewhere in header
-    await expect(page.locator('header')).toContainText('Home');
-    await expect(page.locator('header')).toContainText('Technologies');
-    await expect(page.locator('header')).toContainText('About Me');
-    await expect(page.locator('header')).toContainText('Experience');
+    const header = page.locator('header');
+    await expect(header).toContainText('Home');
+    await expect(header).toContainText('Technologies');
+    await expect(header).toContainText('About Me');
+    await expect(header).toContainText('Experience');
   });
 
   test('should display timeline content', async ({ page }) => {
     // Check for timeline company names
-    await expect(page.locator('section#experience')).toContainText('Contal Services');
+    const experience = page.locator('#experience');
+    await expect(experience).toContainText('Contal Services');
   });
 });
 
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should scroll to experience section when clicking Experience link', async ({ page, isMobile }) => {
     test.skip(!!isMobile, 'Desktop navigation test');
 
-    // Find the desktop nav and click Experience
-    const nav = page.locator('header nav');
-    await nav.getByText('Experience').click();
+    // Find the desktop nav and click Experience link
+    const experienceLink = page.locator('header nav li', { hasText: 'Experience' });
+    await expect(experienceLink).toBeVisible();
+    await experienceLink.click();
 
     // Wait for scroll animation
     await page.waitForTimeout(1000);
 
     // Check the experience section is in viewport
-    const experienceSection = page.locator('section#experience');
+    const experienceSection = page.locator('#experience');
     await expect(experienceSection).toBeInViewport();
   });
 });
@@ -92,21 +95,23 @@ test.describe('Mobile Menu', () => {
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should have mobile menu icon visible', async ({ page }) => {
-    const menuIcon = page.locator('header .bi-list');
+    const menuIcon = page.locator('header i.bi-list');
     await expect(menuIcon).toBeVisible();
   });
 
   test('should open mobile menu when clicking menu icon', async ({ page }) => {
     // Click hamburger menu
-    await page.locator('header .bi-list').click();
+    const menuIcon = page.locator('header i.bi-list');
+    await expect(menuIcon).toBeVisible();
+    await menuIcon.click();
     await page.waitForTimeout(300);
 
     // Close icon should now be visible
-    const closeIcon = page.locator('header .bi-x');
+    const closeIcon = page.locator('i.bi-x');
     await expect(closeIcon).toBeVisible();
   });
 });
@@ -114,17 +119,18 @@ test.describe('Mobile Menu', () => {
 test.describe('Scroll Interactions', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
   });
 
   test('should have scroll arrow button in home section', async ({ page }) => {
-    const arrow = page.locator('button .bi-arrow-down-circle');
+    const arrow = page.locator('#home button i.bi-arrow-down-circle');
     await expect(arrow).toBeVisible();
   });
 
   test('should scroll when clicking arrow button', async ({ page }) => {
-    const arrow = page.locator('button .bi-arrow-down-circle');
-    await arrow.click();
+    const arrowButton = page.locator('#home button:has(i.bi-arrow-down-circle)');
+    await expect(arrowButton).toBeVisible();
+    await arrowButton.click();
     await page.waitForTimeout(1000);
 
     // Should have scrolled (scrollY > 0)
@@ -137,7 +143,7 @@ test.describe('Responsive Design', () => {
   test('should work on desktop viewport', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
 
     // Desktop nav should be visible
     const nav = page.locator('header nav');
@@ -147,10 +153,10 @@ test.describe('Responsive Design', () => {
   test('should work on mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
     await page.goto('/');
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle');
 
     // Mobile menu icon should be visible
-    const menuIcon = page.locator('header .bi-list');
+    const menuIcon = page.locator('header i.bi-list');
     await expect(menuIcon).toBeVisible();
   });
 });
