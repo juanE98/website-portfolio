@@ -1,0 +1,309 @@
+@use "../../styles/variables" as *;
+
+.fplPredictions {
+  min-height: 100vh;
+  padding: 80px 1em 2em;
+  background-color: $page-background;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.container h2 {
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.subtitle {
+  text-align: center;
+  color: $blue-theme;
+  margin-bottom: 2em;
+  font-size: 1.1em !important;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-content: center;
+  margin-bottom: 2em;
+}
+
+.label {
+  display: block;
+  color: $text;
+  font-family: gugi, serif;
+  font-size: 1em;
+  margin-bottom: 0.5em;
+}
+
+// Gameweek Selector
+.gameweekSelector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gameweekControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.gameweekButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: 2px solid $blue-theme;
+  border-radius: 8px;
+  color: $blue-theme;
+  font-size: 1.4em;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover:not(:disabled) {
+    background-color: $blue-theme;
+    color: $page-background;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.gameweekInput {
+  width: 60px;
+  height: 40px;
+  text-align: center;
+  font-size: 1.2em;
+  font-family: gugi, serif;
+  background-color: transparent;
+  border: 2px solid $text;
+  border-radius: 8px;
+  color: $text;
+
+  &:focus {
+    outline: none;
+    border-color: $blue-theme;
+  }
+
+  // Hide spin buttons
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  -moz-appearance: textfield;
+}
+
+// Position Filter
+.positionFilter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.positionButtons {
+  display: flex;
+  gap: 0;
+}
+
+.positionButton {
+  padding: 0.5em 1em;
+  background-color: transparent;
+  border: 2px solid $text;
+  color: $text;
+  font-family: gugi, serif;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+  &:first-child {
+    border-radius: 8px 0 0 8px;
+  }
+
+  &:last-child {
+    border-radius: 0 8px 8px 0;
+  }
+
+  &:not(:first-child) {
+    margin-left: -2px;
+  }
+
+  &:hover:not(.active) {
+    border-color: $blue-theme;
+    color: $blue-theme;
+  }
+
+  &.active {
+    background-color: $blue-theme;
+    border-color: $blue-theme;
+    color: $page-background;
+  }
+}
+
+// Table
+.tableContainer {
+  overflow-x: auto;
+}
+
+.playerTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Work Sans', sans-serif;
+
+  th, td {
+    padding: 0.75em 1em;
+    text-align: left;
+    border-bottom: 1px solid rgba($text, 0.2);
+  }
+
+  th {
+    color: $blue-theme;
+    font-family: gugi, serif;
+    font-size: 0.9em;
+    font-weight: normal;
+    white-space: nowrap;
+  }
+
+  td {
+    color: $text;
+    font-size: 1em;
+  }
+
+  tbody tr {
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: rgba($blue-theme, 0.1);
+    }
+  }
+}
+
+.playerName {
+  font-weight: 500;
+}
+
+// Loading skeleton
+.skeletonRow td {
+  padding: 0.75em 1em;
+}
+
+.skeleton {
+  height: 1.2em;
+  background: linear-gradient(90deg, rgba($text, 0.1) 25%, rgba($text, 0.2) 50%, rgba($text, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// Error state
+.errorState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3em 1em;
+  color: $text;
+
+  i {
+    font-size: 3em;
+    color: $orange;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    margin-bottom: 1em;
+  }
+}
+
+.retryButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.75em 1.5em;
+  background-color: transparent;
+  border: 2px solid $blue-theme;
+  border-radius: 8px;
+  color: $blue-theme;
+  font-family: gugi, serif;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+
+  &:hover {
+    background-color: $blue-theme;
+    color: $page-background;
+  }
+}
+
+// Empty state
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3em 1em;
+  color: $text;
+
+  i {
+    font-size: 3em;
+    color: rgba($text, 0.5);
+    margin-bottom: 0.5em;
+  }
+}
+
+// Mobile responsive
+@media (max-width: 768px) {
+  .fplPredictions {
+    padding: 70px 0.75em 1.5em;
+  }
+
+  .controls {
+    gap: 1.5em;
+  }
+
+  .positionButton {
+    padding: 0.4em 0.7em;
+    font-size: 0.8em;
+  }
+
+  .playerTable {
+    th, td {
+      padding: 0.5em 0.5em;
+      font-size: 0.9em;
+    }
+  }
+
+  .gameweekButton,
+  .positionButton,
+  .retryButton {
+    transition: none;
+  }
+
+  .playerTable tbody tr {
+    transition: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .playerTable {
+    th, td {
+      padding: 0.4em 0.3em;
+      font-size: 0.85em;
+    }
+  }
+}
