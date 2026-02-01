@@ -423,7 +423,7 @@ test.describe('Footer', () => {
 
   test('should display copyright text', async ({ page }) => {
     const footer = page.locator('footer');
-    await expect(footer).toContainText('2024 Juan Espares');
+    await expect(footer).toContainText('2026 Juan Espares');
     await expect(footer).toContainText('All rights reserved');
   });
 

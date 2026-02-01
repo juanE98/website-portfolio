@@ -12,7 +12,7 @@ export default function Footer() {
         </a>
       </div>
       <div className={styles.copyright}>
-        &copy; 2024 Juan Espares. All rights reserved.
+        &copy; 2026 Juan Espares. All rights reserved.
       </div>
     </footer>
   );
