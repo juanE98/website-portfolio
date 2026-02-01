@@ -12,7 +12,8 @@ export default function Header() {
   const isHidden = useHeaderVisibility();
   const pathname = usePathname();
 
-  const isHomePage = pathname === '/' || pathname === '/website-portfolio';
+  const isHomePage = pathname === '/';
+  const isFplPage = pathname.includes('/fpl');
 
   const openMenu = useCallback(() => {
     setMenuOpen(true);
@@ -72,7 +73,7 @@ export default function Header() {
           priority
         />
       ) : (
-        <Link href="/website-portfolio">
+        <Link href="/">
           <Image
             src="/website-portfolio/assets/je-logo.png"
             alt="Logo"
@@ -86,28 +87,35 @@ export default function Header() {
 
       <nav className={styles.desktopMenuNav}>
         <ul>
-          {isHomePage ? (
+          {isFplPage ? (
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+          ) : isHomePage ? (
             <>
               {homeNavItems.map((item) => (
                 <li key={item.fragment} onClick={() => goToPart(item.fragment)}>
                   {item.label}
                 </li>
               ))}
+              <li>
+                <Link href="/fpl">FPL</Link>
+              </li>
             </>
           ) : (
             <>
               {homeNavItems.map((item) => (
                 <li key={item.fragment}>
-                  <Link href={`/website-portfolio#${item.fragment}`}>
+                  <Link href={`/#${item.fragment}`}>
                     {item.label}
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/fpl">FPL</Link>
+              </li>
             </>
           )}
-          <li className={!isHomePage && pathname.includes('/fpl') ? styles.activeNav : ''}>
-            <Link href="/website-portfolio/fpl">FPL</Link>
-          </li>
         </ul>
       </nav>
 
@@ -120,28 +128,35 @@ export default function Header() {
           <i className="bi bi-x"></i>
         </div>
         <ul>
-          {isHomePage ? (
+          {isFplPage ? (
+            <li onClick={closeMenu}>
+              <Link href="/">Home</Link>
+            </li>
+          ) : isHomePage ? (
             <>
               {homeNavItems.map((item) => (
                 <li key={item.fragment} onClick={() => handleMobileNavClick(item.fragment)}>
                   {item.label}
                 </li>
               ))}
+              <li onClick={closeMenu}>
+                <Link href="/fpl">FPL</Link>
+              </li>
             </>
           ) : (
             <>
               {homeNavItems.map((item) => (
                 <li key={item.fragment} onClick={closeMenu}>
-                  <Link href={`/website-portfolio#${item.fragment}`}>
+                  <Link href={`/#${item.fragment}`}>
                     {item.label}
                   </Link>
                 </li>
               ))}
+              <li onClick={closeMenu}>
+                <Link href="/fpl">FPL</Link>
+              </li>
             </>
           )}
-          <li onClick={closeMenu}>
-            <Link href="/website-portfolio/fpl">FPL</Link>
-          </li>
         </ul>
       </div>
     </header>

@@ -40,6 +40,13 @@ export function useFplPredictions(
     await new Promise((resolve) => setTimeout(resolve, 500));
 
     try {
+      // Return empty data for gameweek 25 to test empty state
+      if (gameweek === 25) {
+        setPlayers([]);
+        setLoading(false);
+        return;
+      }
+
       // Filter by position if not ALL
       let filteredPlayers = mockPlayers;
       if (position !== 'ALL') {

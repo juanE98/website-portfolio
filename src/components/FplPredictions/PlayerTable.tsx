@@ -26,7 +26,7 @@ export default function PlayerTable({
               <th>Player</th>
               <th>Pos</th>
               <th>Pts</th>
-              <th>Haul %</th>
+              <th>Return %</th>
               <th>Avail</th>
             </tr>
           </thead>
@@ -62,8 +62,7 @@ export default function PlayerTable({
   if (players.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <i className="bi bi-inbox"></i>
-        <p>No players found</p>
+        <p>No data available</p>
       </div>
     );
   }
@@ -77,7 +76,7 @@ export default function PlayerTable({
             <th>Player</th>
             <th>Pos</th>
             <th>Pts</th>
-            <th>Haul %</th>
+            <th>Return %</th>
             <th>Avail</th>
           </tr>
         </thead>
