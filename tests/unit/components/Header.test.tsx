@@ -7,6 +7,12 @@ jest.mock('@/hooks/useHeaderVisibility', () => ({
   useHeaderVisibility: () => mockIsHidden(),
 }));
 
+// Mock usePathname from next/navigation
+const mockPathname = jest.fn(() => '/');
+jest.mock('next/navigation', () => ({
+  usePathname: () => mockPathname(),
+}));
+
 // Mock next/image
 jest.mock('next/image', () => ({
   __esModule: true,
@@ -14,6 +20,14 @@ jest.mock('next/image', () => ({
     // eslint-disable-next-line @next/next/no-img-element
     return <img {...props} data-priority={priority} alt={props.alt} />;
   },
+}));
+
+// Mock next/link
+jest.mock('next/link', () => ({
+  __esModule: true,
+  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
 }));
 
 // Mock the SCSS module
@@ -31,6 +45,7 @@ jest.mock('@/components/Header/Header.module.scss', () => ({
 describe('Header', () => {
   beforeEach(() => {
     mockIsHidden.mockReturnValue(false);
+    mockPathname.mockReturnValue('/');
     // Reset DOM classes
     document.documentElement.classList.remove('no-scroll');
     document.body.classList.remove('no-interaction');
@@ -116,5 +131,72 @@ describe('Header', () => {
     fireEvent.click(navItems[0]);
 
     expect(window.scrollTo).toHaveBeenCalled();
+  });
+
+  it('should render FPL link on home page', () => {
+    mockPathname.mockReturnValue('/');
+    render(<Header />);
+
+    expect(screen.getAllByText('FPL')).toHaveLength(2); // Desktop + Mobile
+  });
+});
+
+describe('Header on FPL Page', () => {
+  beforeEach(() => {
+    mockIsHidden.mockReturnValue(false);
+    mockPathname.mockReturnValue('/fpl');
+    // Reset DOM classes
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-interaction');
+  });
+
+  it('should only show Home link in desktop nav on FPL page', () => {
+    render(<Header />);
+
+    const desktopNav = document.querySelector('.desktopMenuNav');
+    const navItems = desktopNav?.querySelectorAll('li');
+
+    expect(navItems?.length).toBe(1);
+    expect(navItems?.[0].textContent).toBe('Home');
+  });
+
+  it('should only show Home link in mobile nav on FPL page', () => {
+    render(<Header />);
+
+    const mobileNav = document.querySelector('.mobileMenuPanel');
+    const navItems = mobileNav?.querySelectorAll('li');
+
+    expect(navItems?.length).toBe(1);
+    expect(navItems?.[0].textContent).toBe('Home');
+  });
+
+  it('should not show Technologies, About Me, Experience links on FPL page', () => {
+    render(<Header />);
+
+    expect(screen.queryByText('Technologies')).not.toBeInTheDocument();
+    expect(screen.queryByText('About Me')).not.toBeInTheDocument();
+    expect(screen.queryByText('Experience')).not.toBeInTheDocument();
+  });
+
+  it('should not show FPL link on FPL page', () => {
+    render(<Header />);
+
+    expect(screen.queryByText('FPL')).not.toBeInTheDocument();
+  });
+
+  it('should have Home link pointing to root', () => {
+    render(<Header />);
+
+    const homeLinks = screen.getAllByText('Home');
+    homeLinks.forEach((link) => {
+      expect(link.closest('a')).toHaveAttribute('href', '/');
+    });
+  });
+
+  it('should have logo as link to home on FPL page', () => {
+    render(<Header />);
+
+    const logo = screen.getByAltText('Logo');
+    expect(logo.closest('a')).toHaveAttribute('href', '/');
   });
 });
