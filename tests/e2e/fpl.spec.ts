@@ -219,7 +219,7 @@ test.describe('FPL Page Data Display', () => {
       await expect(headers.nth(1)).toHaveText('Player');
       await expect(headers.nth(2)).toHaveText('Pos');
       await expect(headers.nth(3)).toHaveText('Pts');
-      await expect(headers.nth(4)).toHaveText('Return %');
+      await expect(headers.nth(4)).toHaveText('Haul %');
       await expect(headers.nth(5)).toHaveText('Avail');
     }
   });

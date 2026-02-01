@@ -26,7 +26,7 @@ export default function PlayerTable({
               <th>Player</th>
               <th>Pos</th>
               <th>Pts</th>
-              <th>Return %</th>
+              <th>Haul %</th>
               <th>Avail</th>
             </tr>
           </thead>
@@ -76,7 +76,7 @@ export default function PlayerTable({
             <th>Player</th>
             <th>Pos</th>
             <th>Pts</th>
-            <th>Return %</th>
+            <th>Haul %</th>
             <th>Avail</th>
           </tr>
         </thead>
