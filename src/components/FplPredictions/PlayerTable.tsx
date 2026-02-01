@@ -87,7 +87,7 @@ export default function PlayerTable({
               <td className={styles.playerName}>{player.player_name}</td>
               <td>{player.position}</td>
               <td>{player.predicted_points.toFixed(1)}</td>
-              <td>{(player.haul_probability * 100).toFixed(0)}%</td>
+              <td>{player.haul_probability.toFixed(0)}%</td>
               <td>{player.chance_of_playing}%</td>
             </tr>
           ))}
