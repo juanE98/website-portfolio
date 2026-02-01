@@ -22,7 +22,14 @@ export default function FplPredictions() {
       <div className={styles.container}>
         <h2>FPL Predictions</h2>
         <p className={styles.subtitle}>
-          Top predicted players powered by auto-haaland
+          Top predicted players powered by{' '}
+          <a
+            href="https://github.com/juanE98/auto-haaland"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            auto-haaland
+          </a>
         </p>
 
         <div className={styles.controls}>

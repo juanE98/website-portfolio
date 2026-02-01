@@ -21,6 +21,16 @@
   color: $blue-theme;
   margin-bottom: 2em;
   font-size: 1.1em !important;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+  }
 }
 
 .controls {
