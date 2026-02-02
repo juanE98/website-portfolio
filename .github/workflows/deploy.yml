@@ -92,6 +92,8 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          NEXT_PUBLIC_FPL_API_URL: ${{ secrets.NEXT_PUBLIC_FPL_API_URL }}
 
       - name: Upload artifact
         if: github.ref == 'refs/heads/main'

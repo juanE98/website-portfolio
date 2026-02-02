@@ -2,12 +2,18 @@
 
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useHeaderVisibility } from '@/hooks/useHeaderVisibility';
 import styles from './Header.module.scss';
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const isHidden = useHeaderVisibility();
+  const pathname = usePathname();
+
+  const isHomePage = pathname === '/';
+  const isFplPage = pathname.includes('/fpl');
 
   const openMenu = useCallback(() => {
     setMenuOpen(true);
@@ -39,29 +45,77 @@ export default function Header() {
     }
   }, []);
 
-  const handleNavClick = useCallback((fragment: string) => {
+  const handleMobileNavClick = useCallback((fragment: string) => {
     closeMenu();
-    goToPart(fragment);
-  }, [closeMenu, goToPart]);
+    if (isHomePage) {
+      goToPart(fragment);
+    }
+  }, [closeMenu, goToPart, isHomePage]);
+
+  // Navigation items for home page sections
+  const homeNavItems = [
+    { fragment: 'home', label: 'Home' },
+    { fragment: 'technologies', label: 'Technologies' },
+    { fragment: 'about', label: 'About Me' },
+    { fragment: 'experience', label: 'Experience' },
+  ];
 
   return (
     <header className={`${styles.header} ${isHidden ? styles.hidden : ''}`}>
-      <Image
-        src="/website-portfolio/assets/je-logo.png"
-        alt="Logo"
-        className={styles.logo}
-        width={100}
-        height={40}
-        onClick={() => goToPart('home')}
-        priority
-      />
+      {isHomePage ? (
+        <Image
+          src="/website-portfolio/assets/je-logo.png"
+          alt="Logo"
+          className={styles.logo}
+          width={100}
+          height={40}
+          onClick={() => goToPart('home')}
+          priority
+        />
+      ) : (
+        <Link href="/">
+          <Image
+            src="/website-portfolio/assets/je-logo.png"
+            alt="Logo"
+            className={styles.logo}
+            width={100}
+            height={40}
+            priority
+          />
+        </Link>
+      )}
 
       <nav className={styles.desktopMenuNav}>
         <ul>
-          <li onClick={() => goToPart('home')}>Home</li>
-          <li onClick={() => goToPart('technologies')}>Technologies</li>
-          <li onClick={() => goToPart('about')}>About Me</li>
-          <li onClick={() => goToPart('experience')}>Experience</li>
+          {isFplPage ? (
+            <li>
+              <Link href="/">Home</Link>
+            </li>
+          ) : isHomePage ? (
+            <>
+              {homeNavItems.map((item) => (
+                <li key={item.fragment} onClick={() => goToPart(item.fragment)}>
+                  {item.label}
+                </li>
+              ))}
+              <li>
+                <Link href="/fpl">FPL</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              {homeNavItems.map((item) => (
+                <li key={item.fragment}>
+                  <Link href={`/#${item.fragment}`}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href="/fpl">FPL</Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
 
@@ -74,10 +128,35 @@ export default function Header() {
           <i className="bi bi-x"></i>
         </div>
         <ul>
-          <li onClick={() => handleNavClick('home')}>Home</li>
-          <li onClick={() => handleNavClick('technologies')}>Technologies</li>
-          <li onClick={() => handleNavClick('about')}>About Me</li>
-          <li onClick={() => handleNavClick('experience')}>Experience</li>
+          {isFplPage ? (
+            <li onClick={closeMenu}>
+              <Link href="/">Home</Link>
+            </li>
+          ) : isHomePage ? (
+            <>
+              {homeNavItems.map((item) => (
+                <li key={item.fragment} onClick={() => handleMobileNavClick(item.fragment)}>
+                  {item.label}
+                </li>
+              ))}
+              <li onClick={closeMenu}>
+                <Link href="/fpl">FPL</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              {homeNavItems.map((item) => (
+                <li key={item.fragment} onClick={closeMenu}>
+                  <Link href={`/#${item.fragment}`}>
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li onClick={closeMenu}>
+                <Link href="/fpl">FPL</Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </header>

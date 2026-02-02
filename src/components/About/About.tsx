@@ -23,9 +23,9 @@ export default function About() {
       </div>
       <div className={`${styles.column} ${styles.rightColumn}`}>
         <h2>About myself</h2>
-        <p>Hi, I&apos;m Juan. My passion for software development started with my interest in maths and technology in school. Building my PC sparked my interest in hardware, which then led me to discover programming.</p>
-        <p>I specialise in backend development, focusing on performance optimisation, security, integrations, and business logic processing. My career goal is to become the best developer I can be while learning from others as well as helping others along the way.</p>
-        <p>I believe this field has unlimited potential, which motivates me to continuously improve and learn something new every day.</p>
+        <p>Hi, I&apos;m Juan, a Backend Software Engineer based in Brisbane with over 3 years of experience building secure, high-performance systems. I hold an AWS Solutions Architect certification and a Computer Science degree from the University of Queensland.</p>
+        <p>I&apos;ve worked across healthcare and government sectors, where I&apos;ve delivered meaningful impact through optimising API integrations and automating manual workflows. I enjoy solving complex problems and building solutions that make a real difference.</p>
+        <p>Outside of work, I&apos;m always tinkering with side projects and exploring new technologies. Feel free to connect, I&apos;d love to chat!</p>
       </div>
     </div>
   );
