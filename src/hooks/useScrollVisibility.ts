@@ -17,11 +17,6 @@ export function useScrollVisibility({
   const isMobileRef = useRef(false);
 
   const checkVisibility = useCallback(() => {
-    // Skip bidirectional animations on mobile
-    if (isMobileRef.current) {
-      return;
-    }
-
     const parentElement = containerRef.current;
     if (!parentElement) return;
 

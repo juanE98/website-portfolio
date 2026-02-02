@@ -186,11 +186,23 @@
   }
 }
 
-// Mobile breakpoints
-@media screen and (max-width: 768px) {
+// Fade animation for mobile/tablet (simpler, better performance)
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Tablet breakpoint (iPad)
+@media screen and (max-width: 1024px) {
   .timelineContainer {
     max-width: 100%;
-    padding: 0 0.5em;
+    padding: 0 1.5em;
     margin: 0.8em auto 0;
   }
 
@@ -201,16 +213,30 @@
   .timelineItem {
     width: 100%;
     margin: 2em 0;
-    opacity: 1;
-    transform: none;
+    // Start hidden for fade animation
+    opacity: 0;
+    transform: translateY(20px);
   }
 
   .left,
   .right {
     left: 0 !important;
-    padding-left: 50px;
-    padding-right: 10px;
-    transform: none !important;
+    padding-left: 70px;
+    padding-right: 1.5em;
+  }
+
+  // Fade-in animation for tablet/mobile (simpler than slide)
+  .left:global(.in-view),
+  .right:global(.in-view) {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  // On mobile, just hide when out of view (no exit animation)
+  .left:global(.out-of-view),
+  .right:global(.out-of-view) {
+    animation: none;
+    opacity: 0;
+    transform: translateY(20px);
   }
 
   .content {
@@ -230,18 +256,33 @@
     left: 20px;
   }
 
+  // All triangles point left toward the timeline with small gap
   .left .content::after,
   .right .content::after {
-    left: -10px;
-    border-width: 10px 10px 10px 0;
+    left: -8px;
+    right: auto;
+    border-width: 8px 8px 8px 0;
     border-color: transparent #333 transparent transparent;
+  }
+}
+
+// Mobile breakpoints
+@media screen and (max-width: 768px) {
+  .timelineContainer {
+    padding: 0 1em;
+  }
+
+  .left,
+  .right {
+    padding-left: 55px;
+    padding-right: 1em;
   }
 }
 
 @media screen and (max-width: 480px) {
   .timelineContainer {
     margin-top: 1em;
-    padding: 0 0.25em;
+    padding: 0 0.75em;
   }
 
   .timeline::after {
@@ -250,16 +291,13 @@
 
   .timelineItem {
     margin: 1.5em 0;
-    opacity: 1;
-    transform: none;
   }
 
   .left,
   .right {
     left: 0 !important;
-    padding-left: 40px;
-    padding-right: 5px;
-    transform: none !important;
+    padding-left: 48px;
+    padding-right: 0.75em;
   }
 
   .content {
@@ -279,14 +317,18 @@
 }
 
 @media (max-width: 414px) {
+  .timelineContainer {
+    padding: 0 0.5em;
+  }
+
   .timeline::after {
     left: 15px;
   }
 
   .left,
   .right {
-    padding-left: 35px;
-    padding-right: 0;
+    padding-left: 40px;
+    padding-right: 0.5em;
   }
 
   .circle {
