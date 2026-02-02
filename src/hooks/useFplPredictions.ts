@@ -2,7 +2,7 @@
 
 import useSWR from 'swr';
 import { FplPlayer, FplApiResponse, Position } from '@/types/fpl';
-import { FPL_API_URL, FPL_API_KEY } from '@/config/api';
+import { FPL_API_URL } from '@/config/api';
 
 interface UseFplPredictionsResult {
   players: FplPlayer[];
@@ -12,11 +12,7 @@ interface UseFplPredictionsResult {
 }
 
 async function fetcher(url: string): Promise<FplPlayer[]> {
-  const response = await fetch(url, {
-    headers: {
-      'X-Api-Key': FPL_API_KEY,
-    },
-  });
+  const response = await fetch(url);
 
   if (!response.ok) {
     throw new Error(`API error: ${response.status}`);

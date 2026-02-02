@@ -102,8 +102,7 @@ describe('useFplPredictions', () => {
 
     // Verify position param was passed to API
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('position=FWD'),
-      expect.any(Object)
+      expect.stringContaining('position=FWD')
     );
   });
 
@@ -181,8 +180,7 @@ describe('useFplPredictions', () => {
 
     // Verify position param was NOT passed to API
     expect(global.fetch).toHaveBeenCalledWith(
-      expect.not.stringContaining('position='),
-      expect.any(Object)
+      expect.not.stringContaining('position=')
     );
   });
 
@@ -219,8 +217,7 @@ describe('useFplPredictions', () => {
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('gameweek=5'),
-        expect.any(Object)
+        expect.stringContaining('gameweek=5')
       );
     });
   });
@@ -294,7 +291,7 @@ describe('useFplPredictions', () => {
     expect(result.current.players).toEqual([]);
   });
 
-  it('should include X-Api-Key header', async () => {
+  it('should call fetch without headers (CORS-based auth)', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       json: () => Promise.resolve(createMockResponse()),
@@ -303,14 +300,7 @@ describe('useFplPredictions', () => {
     renderHook(() => useFplPredictions(1, 'ALL'), { wrapper });
 
     await waitFor(() => {
-      expect(global.fetch).toHaveBeenCalledWith(
-        expect.any(String),
-        expect.objectContaining({
-          headers: expect.objectContaining({
-            'X-Api-Key': expect.any(String),
-          }),
-        })
-      );
+      expect(global.fetch).toHaveBeenCalledWith(expect.any(String));
     });
   });
 });
