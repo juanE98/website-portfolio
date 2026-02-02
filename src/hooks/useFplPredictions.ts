@@ -38,16 +38,16 @@ function buildUrl(gameweek: number, position: Position): string {
 }
 
 export function useFplPredictions(
-  gameweek: number,
+  gameweek: number | null,
   position: Position
 ): UseFplPredictionsResult {
-  const url = buildUrl(gameweek, position);
+  const url = gameweek !== null ? buildUrl(gameweek, position) : null;
 
   const { data, error, isLoading, mutate } = useSWR(url, fetcher);
 
   return {
     players: data ?? [],
-    loading: isLoading,
+    loading: gameweek === null || isLoading,
     error: error?.message ?? null,
     refetch: () => mutate(),
   };

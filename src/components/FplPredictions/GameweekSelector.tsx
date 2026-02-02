@@ -3,7 +3,7 @@
 import styles from './FplPredictions.module.scss';
 
 interface GameweekSelectorProps {
-  gameweek: number;
+  gameweek: number | null;
   onChange: (gw: number) => void;
 }
 
@@ -11,14 +11,16 @@ export default function GameweekSelector({
   gameweek,
   onChange,
 }: GameweekSelectorProps) {
+  const isLoading = gameweek === null;
+
   const handleDecrement = () => {
-    if (gameweek > 1) {
+    if (gameweek !== null && gameweek > 1) {
       onChange(gameweek - 1);
     }
   };
 
   const handleIncrement = () => {
-    if (gameweek < 38) {
+    if (gameweek !== null && gameweek < 38) {
       onChange(gameweek + 1);
     }
   };
@@ -37,7 +39,7 @@ export default function GameweekSelector({
         <button
           className={styles.gameweekButton}
           onClick={handleDecrement}
-          disabled={gameweek <= 1}
+          disabled={isLoading || (gameweek !== null && gameweek <= 1)}
           aria-label="Previous gameweek"
         >
           <i className="bi bi-dash"></i>
@@ -45,16 +47,17 @@ export default function GameweekSelector({
         <input
           type="number"
           className={styles.gameweekInput}
-          value={gameweek}
+          value={gameweek ?? ''}
           onChange={handleInputChange}
           min={1}
           max={38}
           aria-label="Gameweek number"
+          disabled={isLoading}
         />
         <button
           className={styles.gameweekButton}
           onClick={handleIncrement}
-          disabled={gameweek >= 38}
+          disabled={isLoading || (gameweek !== null && gameweek >= 38)}
           aria-label="Next gameweek"
         >
           <i className="bi bi-plus"></i>
