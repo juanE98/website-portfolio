@@ -41,7 +41,7 @@ export default function FplPredictions() {
         </p>
 
         <div className={styles.controls}>
-          <GameweekSelector gameweek={gameweek} onChange={setGameweek} />
+          <GameweekSelector gameweek={gameweek} latestGameweek={latestGameweek} onChange={setGameweek} />
           <PositionFilter position={position} onChange={setPosition} />
         </div>
 
