@@ -349,9 +349,9 @@ test.describe('About Section', () => {
 
   test('should display about text content', async ({ page }) => {
     const aboutSection = page.locator('#about');
-    await expect(aboutSection).toContainText('passion for software development');
-    await expect(aboutSection).toContainText('backend development');
-    await expect(aboutSection).toContainText('unlimited potential');
+    await expect(aboutSection).toContainText('Backend Software Engineer');
+    await expect(aboutSection).toContainText('AWS Solutions Architect');
+    await expect(aboutSection).toContainText('University of Queensland');
   });
 
   test('should have two column layout', async ({ page }) => {

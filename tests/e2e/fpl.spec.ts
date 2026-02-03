@@ -127,7 +127,11 @@ test.describe('FPL Page Controls', () => {
   test('should display gameweek selector', async ({ page }) => {
     const gameweekInput = page.locator('input[type="number"]');
     await expect(gameweekInput).toBeVisible();
-    await expect(gameweekInput).toHaveValue('1');
+    // Wait for gameweek to load (input becomes enabled)
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+    // Gameweek defaults to latest, value should be a number > 0
+    const value = await gameweekInput.inputValue();
+    expect(parseInt(value, 10)).toBeGreaterThan(0);
   });
 
   test('should display position filter buttons', async ({ page }) => {
@@ -138,38 +142,55 @@ test.describe('FPL Page Controls', () => {
     await expect(page.locator('button', { hasText: 'FWD' })).toBeVisible();
   });
 
-  test('should increment gameweek when clicking plus button', async ({ page }) => {
+  test('should not increment above latest gameweek', async ({ page }) => {
     const plusButton = page.locator('button', { has: page.locator('i.bi-plus') });
     const gameweekInput = page.locator('input[type="number"]');
 
-    await plusButton.click();
-    await expect(gameweekInput).toHaveValue('2');
+    // Wait for gameweek to load
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+
+    // At latest gameweek, plus button should be disabled
+    await expect(plusButton).toBeDisabled();
   });
 
   test('should decrement gameweek when clicking minus button', async ({ page }) => {
-    const plusButton = page.locator('button', { has: page.locator('i.bi-plus') });
     const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
     const gameweekInput = page.locator('input[type="number"]');
 
-    // First increment to 2
-    await plusButton.click();
-    await expect(gameweekInput).toHaveValue('2');
+    // Wait for gameweek to load
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+    const initialValue = parseInt(await gameweekInput.inputValue(), 10);
 
-    // Then decrement back to 1
+    // Decrement
     await minusButton.click();
-    await expect(gameweekInput).toHaveValue('1');
+    await expect(gameweekInput).toHaveValue((initialValue - 1).toString());
   });
 
-  test('should not decrement below 1', async ({ page }) => {
+  test('should not decrement below minimum gameweek', async ({ page }) => {
     const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
     const gameweekInput = page.locator('input[type="number"]');
 
-    await expect(gameweekInput).toHaveValue('1');
+    // Wait for gameweek to load
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+
+    // Click minus 4 times to reach minimum (latest - 4)
+    for (let i = 0; i < 4; i++) {
+      if (await minusButton.isEnabled()) {
+        await minusButton.click();
+      }
+    }
+
+    // At minimum gameweek, minus button should be disabled
     await expect(minusButton).toBeDisabled();
   });
 
   test('should filter by position when clicking position button', async ({ page }) => {
+    const gameweekInput = page.locator('input[type="number"]');
     const midButton = page.locator('button', { hasText: 'MID' });
+
+    // Wait for gameweek to load
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+
     await midButton.click();
 
     // Wait for data to load
@@ -225,10 +246,10 @@ test.describe('FPL Page Data Display', () => {
   });
 
   test('should display player data when API returns predictions', async ({ page }) => {
-    // Navigate to a gameweek that has data (24 currently has predictions)
     const gameweekInput = page.locator('input[type="number"]');
-    await gameweekInput.fill('24');
-    await gameweekInput.press('Enter');
+
+    // Wait for gameweek to load (defaults to latest with data)
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
 
     // Wait for loading to complete
     await page.waitForTimeout(1500);
@@ -265,10 +286,13 @@ test.describe('FPL Page State Handling', () => {
     await page.waitForLoadState('networkidle');
 
     const gameweekInput = page.locator('input[type="number"]');
+    const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
 
-    // Navigate to a different gameweek
-    await gameweekInput.fill('10');
-    await gameweekInput.press('Enter');
+    // Wait for gameweek to load
+    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+
+    // Navigate to a different gameweek using the minus button
+    await minusButton.click();
 
     // Wait for data to load
     await page.waitForTimeout(1500);
