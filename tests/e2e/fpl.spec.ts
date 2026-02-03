@@ -119,7 +119,30 @@ test.describe('FPL Page Mobile Navigation', () => {
 });
 
 test.describe('FPL Page Controls', () => {
+  const MOCK_GAMEWEEK = 25;
+
   test.beforeEach(async ({ page }) => {
+    // Mock API responses
+    await page.route('**/gameweek/latest', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ gameweek: MOCK_GAMEWEEK }),
+      });
+    });
+
+    await page.route('**/top?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          predictions: [
+            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+          ],
+        }),
+      });
+    });
+
     await page.goto('/website-portfolio/fpl');
     await page.waitForLoadState('networkidle');
   });
@@ -129,9 +152,8 @@ test.describe('FPL Page Controls', () => {
     await expect(gameweekInput).toBeVisible();
     // Wait for gameweek to load (input becomes enabled)
     await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-    // Gameweek defaults to latest, value should be a number > 0
-    const value = await gameweekInput.inputValue();
-    expect(parseInt(value, 10)).toBeGreaterThan(0);
+    // Gameweek defaults to latest (mocked as 25)
+    await expect(gameweekInput).toHaveValue(MOCK_GAMEWEEK.toString());
   });
 
   test('should display position filter buttons', async ({ page }) => {
@@ -159,11 +181,10 @@ test.describe('FPL Page Controls', () => {
 
     // Wait for gameweek to load
     await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-    const initialValue = parseInt(await gameweekInput.inputValue(), 10);
 
     // Decrement
     await minusButton.click();
-    await expect(gameweekInput).toHaveValue((initialValue - 1).toString());
+    await expect(gameweekInput).toHaveValue((MOCK_GAMEWEEK - 1).toString());
   });
 
   test('should not decrement below minimum gameweek', async ({ page }) => {
@@ -194,79 +215,84 @@ test.describe('FPL Page Controls', () => {
     await midButton.click();
 
     // Wait for data to load
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(500);
 
-    // Check that only MID players are shown (or empty state if no MID players)
+    // Check that only MID players are shown (mocked response returns MID player)
     const table = page.locator('table');
-    const emptyMessage = page.locator('text=No data available');
-
-    const tableVisible = await table.isVisible();
-    if (tableVisible) {
-      const positionCells = page.locator('table tbody td:nth-child(3)');
-      const count = await positionCells.count();
-
-      for (let i = 0; i < count; i++) {
-        await expect(positionCells.nth(i)).toHaveText('MID');
-      }
-    } else {
-      // If no MID players, empty state is shown
-      await expect(emptyMessage).toBeVisible();
-    }
+    await expect(table).toBeVisible();
+    const positionCells = page.locator('table tbody td:nth-child(3)');
+    const count = await positionCells.count();
+    expect(count).toBeGreaterThan(0);
+    await expect(positionCells.first()).toHaveText('MID');
   });
 });
 
 test.describe('FPL Page Data Display', () => {
+  const MOCK_GAMEWEEK = 25;
+
   test.beforeEach(async ({ page }) => {
+    // Mock API responses
+    await page.route('**/gameweek/latest', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ gameweek: MOCK_GAMEWEEK }),
+      });
+    });
+
+    await page.route('**/top?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          predictions: [
+            { player_name: 'Erling Haaland', position: 'FWD', predicted_points: 9.2, haul_probability: 0.45, chance_of_playing: 100 },
+            { player_name: 'Mohamed Salah', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+          ],
+        }),
+      });
+    });
+
     await page.goto('/website-portfolio/fpl');
     await page.waitForLoadState('networkidle');
   });
 
   test('should display table or empty state after loading', async ({ page }) => {
     // Wait for loading to complete
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(500);
 
     const table = page.locator('table');
-    const emptyMessage = page.locator('text=No data available');
+    await expect(table).toBeVisible();
 
-    // Either table or empty state should be visible (depending on API data)
-    const tableVisible = await table.isVisible();
-    const emptyVisible = await emptyMessage.isVisible();
-    expect(tableVisible || emptyVisible).toBe(true);
-
-    // If table is visible, check headers
-    if (tableVisible) {
-      const headers = page.locator('table thead th');
-      await expect(headers.nth(0)).toHaveText('#');
-      await expect(headers.nth(1)).toHaveText('Player');
-      await expect(headers.nth(2)).toHaveText('Pos');
-      await expect(headers.nth(3)).toHaveText('Pts');
-      await expect(headers.nth(4)).toHaveText('Haul %');
-      await expect(headers.nth(5)).toHaveText('Avail');
-    }
+    // Check headers
+    const headers = page.locator('table thead th');
+    await expect(headers.nth(0)).toHaveText('#');
+    await expect(headers.nth(1)).toHaveText('Player');
+    await expect(headers.nth(2)).toHaveText('Pos');
+    await expect(headers.nth(3)).toHaveText('Pts');
+    await expect(headers.nth(4)).toHaveText('Haul %');
+    await expect(headers.nth(5)).toHaveText('Avail');
   });
 
   test('should display player data when API returns predictions', async ({ page }) => {
     const gameweekInput = page.locator('input[type="number"]');
 
-    // Wait for gameweek to load (defaults to latest with data)
+    // Wait for gameweek to load
     await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
 
     // Wait for loading to complete
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(500);
 
     const table = page.locator('table');
-    const tableVisible = await table.isVisible();
+    await expect(table).toBeVisible();
 
-    // If API has data for this gameweek, verify table structure
-    if (tableVisible) {
-      const rows = page.locator('table tbody tr');
-      const count = await rows.count();
-      expect(count).toBeGreaterThan(0);
+    const rows = page.locator('table tbody tr');
+    const count = await rows.count();
+    expect(count).toBe(2);
 
-      const firstRow = rows.first();
-      await expect(firstRow.locator('td').nth(0)).toHaveText('1');
-      await expect(firstRow.locator('td').nth(1)).not.toBeEmpty();
-    }
+    const firstRow = rows.first();
+    await expect(firstRow.locator('td').nth(0)).toHaveText('1');
+    await expect(firstRow.locator('td').nth(1)).toHaveText('Erling Haaland');
   });
 
   test('should show loading skeleton initially', async ({ page }) => {
@@ -281,7 +307,30 @@ test.describe('FPL Page Data Display', () => {
 });
 
 test.describe('FPL Page State Handling', () => {
+  const MOCK_GAMEWEEK = 25;
+
   test('should handle changing gameweeks', async ({ page }) => {
+    // Mock API responses
+    await page.route('**/gameweek/latest', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ gameweek: MOCK_GAMEWEEK }),
+      });
+    });
+
+    await page.route('**/top?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          predictions: [
+            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+          ],
+        }),
+      });
+    });
+
     await page.goto('/website-portfolio/fpl');
     await page.waitForLoadState('networkidle');
 
@@ -295,32 +344,44 @@ test.describe('FPL Page State Handling', () => {
     await minusButton.click();
 
     // Wait for data to load
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(500);
 
-    // Should either show table with data or empty state (depending on API)
+    // Table should be visible with mocked data
     const table = page.locator('table');
-    const emptyMessage = page.locator('text=No data available');
-
-    // One of these should be visible
-    const tableVisible = await table.isVisible();
-    const emptyVisible = await emptyMessage.isVisible();
-    expect(tableVisible || emptyVisible).toBe(true);
+    await expect(table).toBeVisible();
   });
 
   test('should show valid state after loading', async ({ page }) => {
+    // Mock API responses
+    await page.route('**/gameweek/latest', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ gameweek: MOCK_GAMEWEEK }),
+      });
+    });
+
+    await page.route('**/top?*', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          predictions: [
+            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+          ],
+        }),
+      });
+    });
+
     await page.goto('/website-portfolio/fpl');
     await page.waitForLoadState('networkidle');
 
     // Wait for data to load
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(500);
 
-    // Should show either table or empty state (both are valid API responses)
+    // Table should be visible with mocked data
     const table = page.locator('table');
-    const emptyMessage = page.locator('text=No data available');
-
-    const tableVisible = await table.isVisible();
-    const emptyVisible = await emptyMessage.isVisible();
-    expect(tableVisible || emptyVisible).toBe(true);
+    await expect(table).toBeVisible();
   });
 });
 

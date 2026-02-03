@@ -43,7 +43,10 @@ export function useFplPredictions(
 ): UseFplPredictionsResult {
   const url = gameweek !== null ? buildUrl(gameweek, position) : null;
 
-  const { data, error, isLoading, mutate } = useSWR(url, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(url, fetcher, {
+    dedupingInterval: 5 * 60 * 1000, // 5 minutes - predictions don't change often
+    revalidateIfStale: false, // Don't auto-revalidate stale data
+  });
 
   return {
     players: data ?? [],

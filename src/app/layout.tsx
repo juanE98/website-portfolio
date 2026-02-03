@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Work_Sans } from 'next/font/google';
+import { SWRProvider } from '@/components/SWRProvider';
 import './globals.scss';
 
 const workSans = Work_Sans({
@@ -20,7 +21,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={workSans.variable}>
-      <body>{children}</body>
+      <body>
+        <SWRProvider>{children}</SWRProvider>
+      </body>
     </html>
   );
 }
