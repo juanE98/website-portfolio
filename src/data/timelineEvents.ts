@@ -8,12 +8,12 @@ export interface TimelineEvent {
 export const timelineEvents: TimelineEvent[] = [
   {
     title: 'Contal Services',
-    subtitle: 'Backend Software Engineer - Current',
+    subtitle: 'Backend Software Engineer | 2024 - Current',
     description: 'Java backend with Spring Boot'
   },
   {
     title: 'Dye and Durham',
-    subtitle: 'Junior Software Engineer | 2023 - 2026',
+    subtitle: 'Junior Software Engineer | 2023 - 2024',
     description: 'Primarily .NET microservices with Angular frontend deployed through kubernetes in GCP.'
   },
   {
