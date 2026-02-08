@@ -148,8 +148,8 @@ test.describe('FPL Page Controls', () => {
   });
 
   test('should display upcoming gameweek label', async ({ page }) => {
-    const label = page.locator('text=Upcoming gameweek: ' + MOCK_GAMEWEEK);
-    await expect(label).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=Gameweek')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(MOCK_GAMEWEEK.toString(), { exact: true })).toBeVisible();
   });
 
   test('should display position filter buttons', async ({ page }) => {
@@ -164,7 +164,7 @@ test.describe('FPL Page Controls', () => {
     const midButton = page.locator('button', { hasText: 'MID' });
 
     // Wait for gameweek label to appear
-    await expect(page.locator('text=Upcoming gameweek: ' + MOCK_GAMEWEEK)).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=Gameweek')).toBeVisible({ timeout: 10000 });
 
     await midButton.click();
 

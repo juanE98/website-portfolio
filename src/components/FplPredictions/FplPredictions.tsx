@@ -8,9 +8,18 @@ import PositionFilter from './PositionFilter';
 import PlayerTable from './PlayerTable';
 import styles from './FplPredictions.module.scss';
 
+function getCurrentSeason(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const startYear = month >= 7 ? year : year - 1; // FPL season starts in August
+  return `${startYear}/${(startYear + 1).toString().slice(-2)}`;
+}
+
 export default function FplPredictions() {
   const [position, setPosition] = useState<Position>('ALL');
   const { latestGameweek } = useLatestGameweek();
+  const season = getCurrentSeason();
 
   const { players, loading, error, refetch } = useFplPredictions(
     latestGameweek,
@@ -33,9 +42,16 @@ export default function FplPredictions() {
         </p>
 
         <div className={styles.controls}>
-          <span className={styles.gameweekLabel}>
-            {latestGameweek !== null ? `Upcoming gameweek: ${latestGameweek}` : ''}
-          </span>
+          <div className={styles.gameweekDisplay}>
+            <label className={styles.label}>Season</label>
+            <span className={styles.gameweekNumber}>{season}</span>
+          </div>
+          <div className={styles.gameweekDisplay}>
+            <label className={styles.label}>Gameweek</label>
+            <span className={styles.gameweekNumber}>
+              {latestGameweek ?? '—'}
+            </span>
+          </div>
           <PositionFilter position={position} onChange={setPosition} />
         </div>
 

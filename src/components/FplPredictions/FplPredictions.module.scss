@@ -49,13 +49,20 @@
   margin-bottom: 0.5em;
 }
 
-// Gameweek Label
-.gameweekLabel {
+// Gameweek Display
+.gameweekDisplay {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  color: $text;
+}
+
+.gameweekNumber {
+  color: $blue-theme;
   font-family: gugi, serif;
-  font-size: 1em;
+  font-size: 1.2em;
+  border: 2px solid $blue-theme;
+  border-radius: 8px;
+  padding: 0.3em 1em;
 }
 
 // Position Filter
