@@ -49,67 +49,13 @@
   margin-bottom: 0.5em;
 }
 
-// Gameweek Selector
-.gameweekSelector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.gameweekControls {
+// Gameweek Label
+.gameweekLabel {
   display: flex;
   align-items: center;
-  gap: 0.5em;
-}
-
-.gameweekButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background-color: transparent;
-  border: 2px solid $blue-theme;
-  border-radius: 8px;
-  color: $blue-theme;
-  font-size: 1.4em;
-  cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
-
-  &:hover:not(:disabled) {
-    background-color: $blue-theme;
-    color: $page-background;
-  }
-
-  &:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-}
-
-.gameweekInput {
-  width: 60px;
-  height: 40px;
-  text-align: center;
-  font-size: 1.2em;
-  font-family: gugi, serif;
-  background-color: transparent;
-  border: 2px solid $text;
-  border-radius: 8px;
   color: $text;
-
-  &:focus {
-    outline: none;
-    border-color: $blue-theme;
-  }
-
-  // Hide spin buttons
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  -moz-appearance: textfield;
+  font-family: gugi, serif;
+  font-size: 1em;
 }
 
 // Position Filter
@@ -298,7 +244,6 @@
     }
   }
 
-  .gameweekButton,
   .positionButton,
   .retryButton {
     transition: none;

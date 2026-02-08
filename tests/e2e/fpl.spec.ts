@@ -147,13 +147,9 @@ test.describe('FPL Page Controls', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('should display gameweek selector', async ({ page }) => {
-    const gameweekInput = page.locator('input[type="number"]');
-    await expect(gameweekInput).toBeVisible();
-    // Wait for gameweek to load (input becomes enabled)
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-    // Gameweek defaults to latest (mocked as 25)
-    await expect(gameweekInput).toHaveValue(MOCK_GAMEWEEK.toString());
+  test('should display upcoming gameweek label', async ({ page }) => {
+    const label = page.locator('text=Upcoming gameweek: ' + MOCK_GAMEWEEK);
+    await expect(label).toBeVisible({ timeout: 10000 });
   });
 
   test('should display position filter buttons', async ({ page }) => {
@@ -164,53 +160,11 @@ test.describe('FPL Page Controls', () => {
     await expect(page.locator('button', { hasText: 'FWD' })).toBeVisible();
   });
 
-  test('should not increment above latest gameweek', async ({ page }) => {
-    const plusButton = page.locator('button', { has: page.locator('i.bi-plus') });
-    const gameweekInput = page.locator('input[type="number"]');
-
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-
-    // At latest gameweek, plus button should be disabled
-    await expect(plusButton).toBeDisabled();
-  });
-
-  test('should decrement gameweek when clicking minus button', async ({ page }) => {
-    const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
-    const gameweekInput = page.locator('input[type="number"]');
-
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-
-    // Decrement
-    await minusButton.click();
-    await expect(gameweekInput).toHaveValue((MOCK_GAMEWEEK - 1).toString());
-  });
-
-  test('should not decrement below minimum gameweek', async ({ page }) => {
-    const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
-    const gameweekInput = page.locator('input[type="number"]');
-
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-
-    // Click minus 4 times to reach minimum (latest - 4)
-    for (let i = 0; i < 4; i++) {
-      if (await minusButton.isEnabled()) {
-        await minusButton.click();
-      }
-    }
-
-    // At minimum gameweek, minus button should be disabled
-    await expect(minusButton).toBeDisabled();
-  });
-
   test('should filter by position when clicking position button', async ({ page }) => {
-    const gameweekInput = page.locator('input[type="number"]');
     const midButton = page.locator('button', { hasText: 'MID' });
 
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
+    // Wait for gameweek label to appear
+    await expect(page.locator('text=Upcoming gameweek: ' + MOCK_GAMEWEEK)).toBeVisible({ timeout: 10000 });
 
     await midButton.click();
 
@@ -275,14 +229,7 @@ test.describe('FPL Page Data Display', () => {
   });
 
   test('should display player data when API returns predictions', async ({ page }) => {
-    const gameweekInput = page.locator('input[type="number"]');
-
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-
-    // Wait for loading to complete
-    await page.waitForTimeout(500);
-
+    // Wait for table to be visible
     const table = page.locator('table');
     await expect(table).toBeVisible();
 
@@ -308,48 +255,6 @@ test.describe('FPL Page Data Display', () => {
 
 test.describe('FPL Page State Handling', () => {
   const MOCK_GAMEWEEK = 25;
-
-  test('should handle changing gameweeks', async ({ page }) => {
-    // Mock API responses
-    await page.route('**/gameweek/latest', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({ gameweek: MOCK_GAMEWEEK }),
-      });
-    });
-
-    await page.route('**/top?*', async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: 'application/json',
-        body: JSON.stringify({
-          predictions: [
-            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
-          ],
-        }),
-      });
-    });
-
-    await page.goto('/website-portfolio/fpl');
-    await page.waitForLoadState('networkidle');
-
-    const gameweekInput = page.locator('input[type="number"]');
-    const minusButton = page.locator('button', { has: page.locator('i.bi-dash') });
-
-    // Wait for gameweek to load
-    await expect(gameweekInput).toBeEnabled({ timeout: 10000 });
-
-    // Navigate to a different gameweek using the minus button
-    await minusButton.click();
-
-    // Wait for data to load
-    await page.waitForTimeout(500);
-
-    // Table should be visible with mocked data
-    const table = page.locator('table');
-    await expect(table).toBeVisible();
-  });
 
   test('should show valid state after loading', async ({ page }) => {
     // Mock API responses
