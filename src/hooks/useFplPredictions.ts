@@ -25,7 +25,7 @@ async function fetcher(url: string): Promise<FplPlayer[]> {
 function buildUrl(gameweek: number, position: Position): string {
   const params = new URLSearchParams({
     gameweek: gameweek.toString(),
-    limit: '10',
+    limit: '15',
     sort_by: 'haul',
     available_only: 'true',
   });
