@@ -21,7 +21,7 @@ export default function FplPredictions() {
   const { latestGameweek } = useLatestGameweek();
   const season = getCurrentSeason();
 
-  const { players, loading, error, refetch } = useFplPredictions(
+  const { players, gameweek, loading, error, refetch } = useFplPredictions(
     latestGameweek,
     position
   );
@@ -49,7 +49,7 @@ export default function FplPredictions() {
           <div className={styles.gameweekDisplay}>
             <label className={styles.label}>Gameweek</label>
             <span className={styles.gameweekNumber}>
-              {latestGameweek ?? '—'}
+              {gameweek ?? latestGameweek ?? '—'}
             </span>
           </div>
           <PositionFilter position={position} onChange={setPosition} />

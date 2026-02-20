@@ -4,14 +4,20 @@ import useSWR from 'swr';
 import { FplPlayer, FplApiResponse, Position } from '@/types/fpl';
 import { FPL_API_URL } from '@/config/api';
 
+interface FetcherResult {
+  predictions: FplPlayer[];
+  gameweek: number;
+}
+
 interface UseFplPredictionsResult {
   players: FplPlayer[];
+  gameweek: number | null;
   loading: boolean;
   error: string | null;
   refetch: () => void;
 }
 
-async function fetcher(url: string): Promise<FplPlayer[]> {
+async function fetcher(url: string): Promise<FetcherResult> {
   const response = await fetch(url);
 
   if (!response.ok) {
@@ -19,7 +25,7 @@ async function fetcher(url: string): Promise<FplPlayer[]> {
   }
 
   const data: FplApiResponse = await response.json();
-  return data.predictions;
+  return { predictions: data.predictions, gameweek: data.gameweek };
 }
 
 function buildUrl(gameweek: number, position: Position): string {
@@ -49,7 +55,8 @@ export function useFplPredictions(
   });
 
   return {
-    players: data ?? [],
+    players: data?.predictions ?? [],
+    gameweek: data?.gameweek ?? null,
     loading: gameweek === null || isLoading,
     error: error?.message ?? null,
     refetch: () => mutate(),
