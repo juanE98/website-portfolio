@@ -349,7 +349,7 @@ test.describe('About Section', () => {
 
   test('should display about text content', async ({ page }) => {
     const aboutSection = page.locator('#about');
-    await expect(aboutSection).toContainText('Backend Software Engineer');
+    await expect(aboutSection).toContainText('backend software engineer');
     await expect(aboutSection).toContainText('AWS Solutions Architect');
     await expect(aboutSection).toContainText('University of Queensland');
   });
