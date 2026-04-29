@@ -30,7 +30,7 @@
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.1.0",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^30.3.0",
     "sass": "^1.83.0",
     "serve": "^14.2.5",
     "ts-node": "^10.9.2",
