@@ -16,14 +16,15 @@ export const timelineEvents: TimelineEvent[] = [
   {
     title: 'Contal Services',
     subtitle: 'Backend Software Engineer | 2024 - Current',
-    description: 'Flight and travel booking software for the airline industry.',
+    description: 'Aged-care software for healthcare providers, including integrations with Australian government aged-care systems.',
     type: 'work',
     period: '2024 — Current',
     role: 'Backend Software Engineer',
     company: 'Contal Services',
     bullets: [
-      'Travel booking workflows — Jetstar API integrations.',
-      'API integrations and automation across third-party travel systems.',
+      'Internal aged-care software for healthcare providers.',
+      'Integrations with Australian government aged-care systems.',
+      'Jetstar API integrations for flight booking system',
     ],
   },
   {
@@ -90,6 +91,6 @@ export const timelineEvents: TimelineEvent[] = [
     period: '2018',
     role: 'Pharmacy Student',
     company: 'Calanna Terrywhite',
-    bullets: ['Rural pharmacy student placement.'],
+    bullets: ['medication dispensing'],
   },
 ];
