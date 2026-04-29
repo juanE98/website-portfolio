@@ -1,7 +1,15 @@
-// SCSS Variables file
-// This file contains only the SCSS variables used across components
+// SCSS Variables — terminal/backend theme adopted from claude.ai/design handoff.
 
-$orange: #ffa213;
-$page-background: #2A2A2A;
-$blue-theme: #91d3d6;
-$text: #d9d9d9;
+$bg: #0d1117;
+$bg-2: #0a0e15;
+$accent: #22d3ee;
+$secondary: #f59e0b;
+$text: #e6edf3;
+$muted: #94a3b8;
+$dim: #64748b;
+$border: #1e293b;
+
+// Legacy aliases so existing modules keep compiling.
+$page-background: $bg;
+$blue-theme: $accent;
+$orange: $secondary;

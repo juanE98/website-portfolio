@@ -3,6 +3,7 @@ import Home from '@/components/Home/Home';
 import ImageCarousel from '@/components/ImageCarousel/ImageCarousel';
 import About from '@/components/About/About';
 import Timeline from '@/components/Timeline/Timeline';
+import Projects from '@/components/Projects/Projects';
 import Footer from '@/components/Footer/Footer';
 
 export default function Page() {
@@ -12,14 +13,17 @@ export default function Page() {
       <section id="home">
         <Home />
       </section>
-      <section id="technologies">
-        <ImageCarousel />
-      </section>
       <section id="about">
         <About />
       </section>
+      <section id="technologies">
+        <ImageCarousel />
+      </section>
       <section id="experience">
         <Timeline />
+      </section>
+      <section id="projects">
+        <Projects />
       </section>
       <Footer />
     </main>

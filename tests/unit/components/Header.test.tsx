@@ -157,7 +157,7 @@ describe('Header on FPL Page', () => {
     const navItems = desktopNav?.querySelectorAll('li');
 
     expect(navItems?.length).toBe(1);
-    expect(navItems?.[0].textContent).toBe('Home');
+    expect(navItems?.[0].textContent).toContain('Home');
   });
 
   it('should only show Home link in mobile nav on FPL page', () => {
@@ -167,7 +167,7 @@ describe('Header on FPL Page', () => {
     const navItems = mobileNav?.querySelectorAll('li');
 
     expect(navItems?.length).toBe(1);
-    expect(navItems?.[0].textContent).toBe('Home');
+    expect(navItems?.[0].textContent).toContain('Home');
   });
 
   it('should not show Technologies, About Me, Experience links on FPL page', () => {

@@ -342,26 +342,17 @@ test.describe('About Section', () => {
     await expect(aboutSection).toContainText('About myself');
   });
 
-  test('should display profile picture', async ({ page }) => {
-    const profilePic = page.locator('#about img[alt="Juan\'s face"]');
-    await expect(profilePic).toBeVisible();
-  });
-
   test('should display about text content', async ({ page }) => {
     const aboutSection = page.locator('#about');
-    await expect(aboutSection).toContainText('backend software engineer');
+    await expect(aboutSection).toContainText('software engineer');
     await expect(aboutSection).toContainText('AWS Solutions Architect');
     await expect(aboutSection).toContainText('University of Queensland');
   });
 
-  test('should have two column layout', async ({ page }) => {
-    // Left column with image
-    const leftColumn = page.locator('#about img[alt="Juan\'s face"]');
-    await expect(leftColumn).toBeVisible();
-
-    // Right column with text
-    const rightColumn = page.locator('#about h2');
-    await expect(rightColumn).toBeVisible();
+  test('should display facts list', async ({ page }) => {
+    const aboutSection = page.locator('#about');
+    await expect(aboutSection).toContainText('Brisbane, AU');
+    await expect(aboutSection).toContainText('Backend Engineer');
   });
 });
 
@@ -401,7 +392,7 @@ test.describe('Experience Section (Timeline)', () => {
   test('should display job descriptions', async ({ page }) => {
     const experience = page.locator('#experience');
 
-    await expect(experience).toContainText('Java backend with Spring Boot');
+    await expect(experience).toContainText('Jetstar API integrations');
     await expect(experience).toContainText('.NET microservices');
     await expect(experience).toContainText('Angular frontend');
   });

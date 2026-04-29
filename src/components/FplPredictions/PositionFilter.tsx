@@ -8,7 +8,9 @@ interface PositionFilterProps {
   onChange: (pos: Position) => void;
 }
 
-const positions: Position[] = ['ALL', 'GKP', 'DEF', 'MID', 'FWD'];
+const POSITIONS: Position[] = ['ALL', 'GKP', 'DEF', 'MID', 'FWD'];
+
+const positionLabel = (p: Position): string => (p === 'ALL' ? 'All' : p);
 
 export default function PositionFilter({
   position,
@@ -16,18 +18,19 @@ export default function PositionFilter({
 }: PositionFilterProps) {
   return (
     <div className={styles.positionFilter}>
-      <label className={styles.label}>Position</label>
+      <span className={styles.chipLabel}>POSITION</span>
       <div className={styles.positionButtons}>
-        {positions.map((pos) => (
+        {POSITIONS.map((pos) => (
           <button
             key={pos}
+            type="button"
             className={`${styles.positionButton} ${
               position === pos ? styles.active : ''
             }`}
             onClick={() => onChange(pos)}
             aria-pressed={position === pos}
           >
-            {pos === 'ALL' ? 'All' : pos}
+            {positionLabel(pos)}
           </button>
         ))}
       </div>

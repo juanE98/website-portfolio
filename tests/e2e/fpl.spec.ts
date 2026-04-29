@@ -137,7 +137,7 @@ test.describe('FPL Page Controls', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           predictions: [
-            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 35, chance_of_playing: 100 },
           ],
         }),
       });
@@ -200,8 +200,8 @@ test.describe('FPL Page Data Display', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           predictions: [
-            { player_name: 'Erling Haaland', position: 'FWD', predicted_points: 9.2, haul_probability: 0.45, chance_of_playing: 100 },
-            { player_name: 'Mohamed Salah', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+            { player_name: 'Erling Haaland', position: 'FWD', predicted_points: 9.2, haul_probability: 45, chance_of_playing: 100 },
+            { player_name: 'Mohamed Salah', position: 'MID', predicted_points: 8.5, haul_probability: 35, chance_of_playing: 100 },
           ],
         }),
       });
@@ -272,7 +272,7 @@ test.describe('FPL Page State Handling', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           predictions: [
-            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 0.35, chance_of_playing: 100 },
+            { player_name: 'Test Player', position: 'MID', predicted_points: 8.5, haul_probability: 35, chance_of_playing: 100 },
           ],
         }),
       });

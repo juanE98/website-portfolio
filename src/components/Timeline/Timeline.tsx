@@ -1,32 +1,96 @@
 'use client';
 
+import { useRef } from 'react';
 import { useScrollVisibility } from '@/hooks/useScrollVisibility';
+import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { timelineEvents } from '@/data/timelineEvents';
 import styles from './Timeline.module.scss';
 
 export default function Timeline() {
   const containerRef = useScrollVisibility({
     selector: `.${styles.timelineItem}`,
-    visibilityThreshold: 0.3
+    visibilityThreshold: 0.2,
   });
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const progress = useScrollProgress(wrapRef);
+
+  const litHeight = `calc((100% - 16px) * ${Math.max(
+    0,
+    Math.min(1, (progress - 0.1) * 1.4)
+  )})`;
 
   return (
     <div className={styles.timelineContainer} ref={containerRef}>
-      <h2 className={styles.timelineTitle}>Experience</h2>
-      <div className={styles.timeline}>
-        {timelineEvents.map((event, index) => (
-          <div
-            key={index}
-            className={`${styles.timelineItem} ${index % 2 === 0 ? styles.left : styles.right}`}
-          >
-            <div className={styles.circle}></div>
-            <div className={styles.content}>
-              <h3>{event.title}</h3>
-              <h4>{event.subtitle}</h4>
-              {event.description && <p>{event.description}</p>}
+      {/* Section header */}
+      <div className={styles.sectionHeader}>
+        <div className={styles.cmdLine}>
+          <span className={styles.cmdPrompt}>$</span> git log --oneline --graph --since=2016
+        </div>
+        <div className={styles.titleRow}>
+          <span className={styles.indexNum}>03.</span>
+          <h2 className={styles.timelineTitle}>Experience</h2>
+          <span className={styles.titleRule} aria-hidden="true" />
+          <span className={styles.kicker}>THE PATH SO FAR</span>
+        </div>
+      </div>
+
+      <div className={styles.timeline} ref={wrapRef}>
+        {/* dim spine */}
+        <div className={styles.spine} aria-hidden="true" />
+        {/* lit overlay spine */}
+        <div
+          className={styles.spineLit}
+          aria-hidden="true"
+          style={{ height: litHeight }}
+        />
+
+        {timelineEvents.map((event, index) => {
+          const isEdu = event.type === 'edu';
+          const sideClass = index % 2 === 0 ? styles.left : styles.right;
+          return (
+            <div
+              key={index}
+              className={`${styles.timelineItem} ${sideClass} ${
+                isEdu ? styles.edu : styles.work
+              }`}
+              style={{ animationDelay: `${index * 80}ms` }}
+            >
+              {/* node circle */}
+              <div className={styles.node} aria-hidden="true">
+                <div className={styles.nodeInner} />
+              </div>
+
+              <div className={styles.content}>
+                <div className={styles.metaRow}>
+                  <span
+                    className={`${styles.pill} ${
+                      isEdu ? styles.pillEdu : styles.pillWork
+                    }`}
+                  >
+                    {isEdu ? 'EDU' : 'WORK'}
+                  </span>
+                  <span className={styles.period}>{event.period}</span>
+                </div>
+
+                <h3>{event.role}</h3>
+                <div className={styles.companyLine}>
+                  <span className={styles.companyAt}>@</span>{' '}
+                  <span className={styles.companyName}>{event.company}</span>
+                </div>
+
+                {event.description && <p>{event.description}</p>}
+
+                {event.bullets.length > 0 && (
+                  <ul className={styles.bullets}>
+                    {event.bullets.map((b, j) => (
+                      <li key={j}>{b}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

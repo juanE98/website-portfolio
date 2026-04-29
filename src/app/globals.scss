@@ -21,91 +21,99 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: $page-background;
+  background-color: $bg;
+  color: $text;
   min-height: 100vh;
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.06), transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(245, 158, 11, 0.04), transparent 50%),
+    radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0, 0, 0, 0.5));
+  pointer-events: none;
+  z-index: 0;
 }
 
 main {
   display: block;
   min-height: 100vh;
   width: 100%;
-  background-color: $page-background;
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: rgba(34, 211, 238, 0.35);
+  color: #fff;
 }
 
 @keyframes slideInLeft {
-  from {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(-100%); opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
 }
 
 @keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(100%);  opacity: 0; }
+  to   { transform: translateX(0);     opacity: 1; }
 }
 
 @keyframes slideOutLeft {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(-100%); opacity: 0; }
 }
 
 @keyframes slideOutRight {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
+  from { transform: translateX(0);     opacity: 1; }
+  to   { transform: translateX(100%);  opacity: 0; }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOut {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(20px); }
+}
+
+@keyframes boot-fade {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes caret-blink {
+  50% { opacity: 0; }
+}
+
+@keyframes scroll-line {
+  0%, 100% { transform: scaleY(0.4); transform-origin: top; }
+  50%      { transform: scaleY(1);   transform-origin: top; }
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
 .menu-icon {
-  color: black;
+  color: $text;
 }
 
-/* Mobile menu scroll prevention */
 html.no-scroll {
   overflow: hidden !important;
   height: 100% !important;
@@ -118,19 +126,22 @@ body.no-interaction {
   height: 100% !important;
 }
 
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 0.7em;
 }
 
 ::-webkit-scrollbar-track {
-  background: $page-background;
+  background: $bg-2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: $text;
+  background-color: $border;
   border-radius: 10px;
-  border: 3px solid $page-background;
+  border: 3px solid $bg-2;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #334155;
 }
 
 h2 {
@@ -139,14 +150,6 @@ h2 {
   color: $text;
 }
 
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  html {
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Mainly for the timeline section */
 h3 {
   font-family: gugi, serif;
   font-size: 2em;
@@ -157,7 +160,7 @@ h3 {
 h4 {
   font-family: 'Work Sans', sans-serif;
   font-size: 1.5em;
-  color: $text;
+  color: $muted;
   line-height: 1.5;
   font-style: italic;
 }
@@ -169,33 +172,17 @@ p {
   line-height: 1.5;
 }
 
-/* Mobile typography scaling */
 @media (max-width: 768px) {
-  h2 {
-    font-size: 2.5em;
-  }
-  h3 {
-    font-size: 1.6em;
-  }
-  h4 {
-    font-size: 1.3em;
-  }
-  p {
-    font-size: 1.15em;
-  }
+  html { scroll-behavior: auto !important; }
+  h2 { font-size: 2.5em; }
+  h3 { font-size: 1.6em; }
+  h4 { font-size: 1.3em; }
+  p  { font-size: 1.15em; }
 }
 
 @media (max-width: 480px) {
-  h2 {
-    font-size: 2em;
-  }
-  h3 {
-    font-size: 1.4em;
-  }
-  h4 {
-    font-size: 1.2em;
-  }
-  p {
-    font-size: 1.05em;
-  }
+  h2 { font-size: 2em; }
+  h3 { font-size: 1.4em; }
+  h4 { font-size: 1.2em; }
+  p  { font-size: 1.05em; }
 }

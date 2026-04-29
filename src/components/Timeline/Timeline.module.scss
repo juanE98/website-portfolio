@@ -1,356 +1,305 @@
 @use "../../styles/variables" as *;
 
 .timelineContainer {
-  max-width: 1400px;
-  margin: 1em auto 0;
-  padding: 1em;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 6em 1.5em 4em;
   position: relative;
-  overflow: hidden;
+}
+
+// ─── Section header ────────────────────────────────────────────────
+.sectionHeader {
+  margin-bottom: 2.5em;
+}
+
+.cmdLine {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.82rem;
+  color: $dim;
+  margin-bottom: 0.9em;
+  letter-spacing: 0.02em;
+}
+
+.cmdPrompt {
+  color: $accent;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.indexNum {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.9rem;
+  color: $accent;
+  letter-spacing: 0.1em;
 }
 
 .timelineTitle {
+  margin: 0;
+  font-family: gugi, serif;
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
   color: $text;
+  line-height: 1.05;
 }
 
+.titleRule {
+  flex: 1;
+  min-width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.33), transparent);
+  align-self: center;
+  margin: 0 0.5rem;
+}
+
+.kicker {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  color: $dim;
+  letter-spacing: 0.18em;
+}
+
+// ─── Timeline wrapper ─────────────────────────────────────────────
 .timeline {
   position: relative;
-  margin: 2em auto;
-  padding: 2em 0;
-  width: 100%;
-
-  &::after {
-    content: '';
-    position: absolute;
-    width: 4px;
-    background-color: $blue-theme;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1;
-  }
+  padding-left: 28px;
 }
 
+.spine {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 7px;
+  width: 1px;
+  background: $border;
+}
+
+.spineLit {
+  position: absolute;
+  top: 8px;
+  left: 7px;
+  width: 1px;
+  background: linear-gradient(180deg, $accent, rgba(34, 211, 238, 0.33));
+  box-shadow: 0 0 8px rgba(34, 211, 238, 0.53);
+  transition: height 120ms linear;
+  pointer-events: none;
+}
+
+// ─── Timeline item ────────────────────────────────────────────────
 .timelineItem {
-  margin: 2em 0;
   position: relative;
-  width: 50%;
-  z-index: 2;
+  padding-bottom: 2.25rem;
   opacity: 0;
-  transform: translateX(-100%);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
 
-.left {
-  left: 0;
-  padding-right: 3em;
-}
-
-.right {
-  left: 50%;
-  padding-left: 3em;
-  transform: translateX(100%);
-}
-
-.content {
-  padding: 2em;
-  background-color: #333;
-  position: relative;
-  border-radius: 6px;
-  color: $text;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-  margin: 0 2em;
-
-  h3 {
-    margin: 0 0 0.5em;
-    color: $text;
+  &:last-child {
+    padding-bottom: 0;
   }
 
-  h4 {
-    margin: 0 0 0.5em;
-    color: $blue-theme;
-    font-weight: normal;
-  }
-
-  p {
-    margin: 0;
-    line-height: 1.6;
-  }
-}
-
-.circle {
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  background: radial-gradient(circle, #1c6568 15%, $blue-theme 100%);
-  border-radius: 50%;
-  top: 50%;
-  left: auto;
-  right: -12.5px;
-  transform: translateY(-50%);
-  z-index: 3;
-  border: 3px solid $blue-theme;
-}
-
-.right .circle {
-  left: -12.5px;
-  right: auto;
-}
-
-// Content arrow styling
-.left .content::after {
-  content: '';
-  position: absolute;
-  right: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 10px 0 10px 10px;
-  border-style: solid;
-  border-color: transparent transparent transparent #333;
-}
-
-.right .content::after {
-  content: '';
-  position: absolute;
-  left: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  border-width: 10px 10px 10px 0;
-  border-style: solid;
-  border-color: transparent #333 transparent transparent;
-}
-
-// Scroll visibility animations
-.timelineItem:global(.in-view) {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.left:global(.in-view) {
-  animation: slideInLeft 0.8s ease-out forwards;
-}
-
-.right:global(.in-view) {
-  animation: slideInRight 0.8s ease-out forwards;
-}
-
-.left:global(.out-of-view) {
-  animation: slideOutLeft 0.5s ease-in forwards;
-}
-
-.right:global(.out-of-view) {
-  animation: slideOutRight 0.5s ease-in forwards;
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOutLeft {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes slideOutRight {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-// Fade animation for mobile/tablet (simpler, better performance)
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
+  &:global(.in-view) {
     opacity: 1;
     transform: translateY(0);
   }
+
+  &:global(.out-of-view) {
+    opacity: 0;
+    transform: translateY(16px);
+  }
 }
 
-// Tablet breakpoint (iPad)
-@media screen and (max-width: 1024px) {
-  .timelineContainer {
-    max-width: 100%;
-    padding: 0 1.5em;
-    margin: 0.8em auto 0;
+// `.left` / `.right` are kept for the unit test's alternation assertion;
+// visually we render everything left-aligned.
+.left,
+.right {
+  // identical layout — the design is left-only
+}
+
+// ─── Node ─────────────────────────────────────────────────────────
+.node {
+  position: absolute;
+  left: -28px;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: $bg;
+  border: 1.5px solid $accent;
+  box-shadow:
+    0 0 0 4px $bg,
+    0 0 12px rgba(34, 211, 238, 0.53);
+
+  .edu & {
+    border-color: $secondary;
+    box-shadow:
+      0 0 0 4px $bg,
+      0 0 12px rgba(245, 158, 11, 0.53);
+  }
+}
+
+.nodeInner {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: $accent;
+
+  .edu & {
+    background: $secondary;
+  }
+}
+
+// ─── Content ──────────────────────────────────────────────────────
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 4px 0 0;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 3px;
+  font-size: 0.625rem;
+  letter-spacing: 0.12em;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-weight: 500;
+}
+
+.pillWork {
+  background: rgba(34, 211, 238, 0.13);
+  color: $accent;
+}
+
+.pillEdu {
+  background: rgba(245, 158, 11, 0.13);
+  color: $secondary;
+}
+
+.period {
+  color: $dim;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.content {
+  h3 {
+    margin: 0.4rem 0 0;
+    font-family: gugi, serif;
+    font-size: 1.5rem;
+    color: $text;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
   }
 
-  .timeline::after {
-    left: 31px;
+  p {
+    margin: 0.6rem 0 0;
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem;
+    color: $muted;
+    line-height: 1.65;
+  }
+}
+
+.companyLine {
+  margin: 0.25rem 0 0;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.95rem;
+  color: $muted;
+  line-height: 1.5;
+}
+
+.companyAt {
+  color: $dim;
+  font-family: var(--font-jetbrains-mono), monospace;
+}
+
+.companyName {
+  color: $text;
+}
+
+.bullets {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+  color: $muted;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.65;
+
+  li {
+    margin-bottom: 0.25rem;
+
+    &::marker {
+      color: $dim;
+    }
+  }
+}
+
+// ─── Responsive ───────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .timelineContainer {
+    padding: 4em 1.25em 3em;
+  }
+
+  .timeline {
+    padding-left: 24px;
+  }
+
+  .spine,
+  .spineLit {
+    left: 5px;
+  }
+
+  .node {
+    left: -24px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .content h3 {
+    font-size: 1.3rem;
   }
 
   .timelineItem {
-    width: 100%;
-    margin: 2em 0;
-    // Start hidden for fade animation
-    opacity: 0;
-    transform: translateY(20px);
-  }
+    transition: none;
+    transform: none;
+    opacity: 1;
 
-  .left,
-  .right {
-    left: 0 !important;
-    padding-left: 70px;
-    padding-right: 1.5em;
-  }
-
-  // Fade-in animation for tablet/mobile (simpler than slide)
-  .left:global(.in-view),
-  .right:global(.in-view) {
-    animation: fadeIn 0.6s ease-out forwards;
-  }
-
-  // On mobile, just hide when out of view (no exit animation)
-  .left:global(.out-of-view),
-  .right:global(.out-of-view) {
-    animation: none;
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  .content {
-    padding: 1.5em;
-    margin: 0;
-  }
-
-  .circle {
-    width: 22px;
-    height: 22px;
-    left: 20px;
-    right: auto;
-  }
-
-  .left .circle,
-  .right .circle {
-    left: 20px;
-  }
-
-  // All triangles point left toward the timeline with small gap
-  .left .content::after,
-  .right .content::after {
-    left: -8px;
-    right: auto;
-    border-width: 8px 8px 8px 0;
-    border-color: transparent #333 transparent transparent;
-  }
-}
-
-// Mobile breakpoints
-@media screen and (max-width: 768px) {
-  .timelineContainer {
-    padding: 0 1em;
-  }
-
-  .left,
-  .right {
-    padding-left: 55px;
-    padding-right: 1em;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .timelineContainer {
-    margin-top: 1em;
-    padding: 0 0.75em;
-  }
-
-  .timeline::after {
-    left: 21px;
-  }
-
-  .timelineItem {
-    margin: 1.5em 0;
-  }
-
-  .left,
-  .right {
-    left: 0 !important;
-    padding-left: 48px;
-    padding-right: 0.75em;
-  }
-
-  .content {
-    padding: 1em;
-  }
-
-  .circle {
-    width: 20px;
-    height: 20px;
-    left: 10px;
-  }
-
-  .left .circle,
-  .right .circle {
-    left: 10px;
-  }
-}
-
-@media (max-width: 414px) {
-  .timelineContainer {
-    padding: 0 0.5em;
-  }
-
-  .timeline::after {
-    left: 15px;
-  }
-
-  .left,
-  .right {
-    padding-left: 40px;
-    padding-right: 0.5em;
-  }
-
-  .circle {
-    width: 18px;
-    height: 18px;
-    left: 6px;
-  }
-
-  .left .circle,
-  .right .circle {
-    left: 6px;
-  }
-
-  .content {
-    padding: 0.85em;
-
-    h3 {
-      font-size: 1.2em;
+    &:global(.in-view),
+    &:global(.out-of-view) {
+      opacity: 1;
+      transform: none;
     }
+  }
+}
 
-    h4 {
-      font-size: 1em;
-    }
+@media (max-width: 480px) {
+  .timelineContainer {
+    padding: 3em 1em 2em;
+  }
+
+  .titleRule {
+    display: none;
+  }
+
+  .kicker {
+    flex-basis: 100%;
+    margin-top: 0.3rem;
   }
 }

@@ -10,13 +10,39 @@ jest.mock('@/hooks/useScrollVisibility', () => ({
 // Mock the SCSS module
 jest.mock('@/components/Timeline/Timeline.module.scss', () => ({
   timelineContainer: 'timelineContainer',
+  sectionHeader: 'sectionHeader',
+  cmdLine: 'cmdLine',
+  cmdPrompt: 'cmdPrompt',
+  titleRow: 'titleRow',
+  indexNum: 'indexNum',
   timelineTitle: 'timelineTitle',
+  titleRule: 'titleRule',
+  kicker: 'kicker',
   timeline: 'timeline',
+  spine: 'spine',
+  spineLit: 'spineLit',
   timelineItem: 'timelineItem',
   left: 'left',
   right: 'right',
-  circle: 'circle',
+  edu: 'edu',
+  work: 'work',
+  node: 'node',
+  nodeInner: 'nodeInner',
   content: 'content',
+  metaRow: 'metaRow',
+  pill: 'pill',
+  pillWork: 'pillWork',
+  pillEdu: 'pillEdu',
+  period: 'period',
+  bullets: 'bullets',
+  companyLine: 'companyLine',
+  companyAt: 'companyAt',
+  companyName: 'companyName',
+}));
+
+// Mock the useScrollProgress hook (used by Timeline to drive lit spine height)
+jest.mock('@/hooks/useScrollProgress', () => ({
+  useScrollProgress: () => 0,
 }));
 
 describe('Timeline', () => {
@@ -29,8 +55,9 @@ describe('Timeline', () => {
     render(<Timeline />);
 
     timelineEvents.forEach((event) => {
-      expect(screen.getByText(event.title)).toBeInTheDocument();
-      expect(screen.getByText(event.subtitle)).toBeInTheDocument();
+      expect(screen.getByText(event.role)).toBeInTheDocument();
+      expect(screen.getAllByText(event.company).length).toBeGreaterThan(0);
+      expect(screen.getByText(event.period)).toBeInTheDocument();
     });
   });
 

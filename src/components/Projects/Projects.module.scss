@@ -1,0 +1,348 @@
+@use "../../styles/variables" as *;
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 6em 1.5em 4em;
+  position: relative;
+}
+
+// ─── Section header (mirrors Timeline) ────────────────────────────
+.sectionHeader {
+  margin-bottom: 2.5em;
+}
+
+.cmdLine {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.82rem;
+  color: $dim;
+  margin-bottom: 0.9em;
+  letter-spacing: 0.02em;
+}
+
+.cmdPrompt {
+  color: $accent;
+}
+
+.titleRow {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.indexNum {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.9rem;
+  color: $accent;
+  letter-spacing: 0.1em;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-family: gugi, serif;
+  font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: $text;
+  line-height: 1.05;
+}
+
+.titleRule {
+  flex: 1;
+  min-width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.33), transparent);
+  align-self: center;
+  margin: 0 0.5rem;
+}
+
+.kicker {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.7rem;
+  color: $dim;
+  letter-spacing: 0.18em;
+}
+
+// ─── Two-column grid ──────────────────────────────────────────────
+.projectGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 48px;
+  align-items: start;
+}
+
+// ─── Left column ──────────────────────────────────────────────────
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.featuredKicker {
+  display: inline-block;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  color: $secondary;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.projectTitle {
+  margin: 12px 0 16px;
+  font-family: gugi, serif;
+  font-size: 36px;
+  font-weight: 500;
+  color: #f4f6f8;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.projectBody {
+  margin: 0;
+  color: $muted;
+  line-height: 1.7;
+  font-size: 16px;
+  font-family: 'Work Sans', var(--font-work-sans), sans-serif;
+}
+
+.stackChips {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  border: 1px solid $border;
+  color: $muted;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.actions {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(34, 211, 238, 0.09);
+  border: 1px solid rgba(34, 211, 238, 0.4);
+  color: $accent;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: rgba(34, 211, 238, 0.16);
+    box-shadow:
+      0 0 0 1px rgba(34, 211, 238, 0.4),
+      0 0 24px -4px rgba(34, 211, 238, 0.55);
+    border-color: rgba(34, 211, 238, 0.6);
+  }
+}
+
+.secondaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid $border;
+  color: $muted;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  transition: color 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    color: $text;
+    border-color: #334155;
+  }
+}
+
+.hint {
+  margin-top: 28px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+// ─── Right column: mock IDE ───────────────────────────────────────
+.ide {
+  border: 1px solid $border;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #0a0e15;
+  box-shadow:
+    0 30px 60px -30px rgba(34, 211, 238, 0.33),
+    inset 0 0 0 1px rgba(34, 211, 238, 0.13);
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #0d1117;
+  border-bottom: 1px solid $border;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dotRed {
+  background: #ef4444;
+}
+
+.dotAmber {
+  background: #f59e0b;
+}
+
+.dotGreen {
+  background: #10b981;
+}
+
+.titleCaption {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  color: $dim;
+  letter-spacing: 0.04em;
+}
+
+.tabStrip {
+  display: flex;
+  background: #0a0e15;
+  border-bottom: 1px solid $border;
+  overflow-x: auto;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 16px;
+  background: transparent;
+  color: $dim;
+  border: none;
+  border-right: 1px solid $border;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+
+  &:hover {
+    color: #cbd5e1;
+  }
+}
+
+.tabActive {
+  background: #0d1117;
+  color: $text;
+  border-bottom: 2px solid $accent;
+}
+
+.fileIcon {
+  color: $secondary;
+  font-weight: 600;
+  margin-right: 8px;
+  font-size: 11px;
+}
+
+.editor {
+  display: flex;
+  height: 380px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.lineNumbers {
+  padding: 12px 10px 12px 14px;
+  color: #334155;
+  text-align: right;
+  user-select: none;
+  border-right: 1px solid $border;
+  background: #0a0e15;
+  min-width: 44px;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow: hidden;
+}
+
+.textarea {
+  flex: 1;
+  padding: 12px 14px;
+  background: #0a0e15;
+  color: $text;
+  border: none;
+  outline: none;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  resize: none;
+  caret-color: $accent;
+  width: 100%;
+}
+
+.statusBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 14px;
+  background: #0d1117;
+  border-top: 1px solid $border;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 11px;
+  color: $dim;
+}
+
+.statusEditable {
+  color: $accent;
+}
+
+// ─── Mobile ───────────────────────────────────────────────────────
+@media (max-width: 900px) {
+  .projectGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .editor {
+    height: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 4em 1em 3em;
+  }
+
+  .projectTitle {
+    font-size: 28px;
+  }
+}
