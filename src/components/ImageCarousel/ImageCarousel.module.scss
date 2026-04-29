@@ -190,8 +190,17 @@
   backface-visibility: hidden;
 }
 
-.chip + .chip {
-  margin-left: 12px;
+// Two explicit halves. iOS WebKit was failing to compute the previous
+// single-track flex width (chips collapsed to 0px on first paint and
+// the marquee never advanced); explicit groups with flex-shrink: 0
+// avoid that. padding-right on each group equals the inter-chip gap,
+// so the seam between A and B looks identical to the seam between any
+// two chips and translate3d(-50%) lands exactly on B's first chip.
+.marqueeGroup {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  padding-right: 12px;
 }
 
 @-webkit-keyframes carousel-marquee {

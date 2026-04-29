@@ -80,7 +80,7 @@ export const timelineEvents: TimelineEvent[] = [
     period: '2016 — 2018',
     role: 'Bachelor of Pharmaceutics and Therapeutic Science',
     company: 'University of Queensland',
-    bullets: ['First degree before switching tracks to CS.'],
+    bullets: ['Early grad exit from UQ Pharmacy before switching to CS'],
   },
   {
     title: 'Pharmacy Student',

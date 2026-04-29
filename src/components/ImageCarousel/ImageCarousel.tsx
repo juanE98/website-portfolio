@@ -36,8 +36,31 @@ const iconUrl = (tech: Tech) =>
 
 export default function ImageCarousel() {
   const [focused, setFocused] = useState<Tech>(TECH[0]);
-  const loop = [...TECH, ...TECH];
   const focusedIndex = TECH.findIndex((t) => t.name === focused.name);
+
+  const renderChip = (t: Tech, key: string) => {
+    const isFocused = focused.name === t.name;
+    return (
+      <button
+        key={key}
+        type="button"
+        className={`${styles.chip} ${isFocused ? styles.chipActive : ''}`}
+        onClick={() => setFocused(t)}
+        aria-label={`Focus ${t.name}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          alt="Technology icon"
+          src={iconUrl(t)}
+          width={20}
+          height={20}
+          className={styles.chipIcon}
+        />
+        <span className={styles.chipName}>{t.name}</span>
+        <span className={styles.chipTag}>{t.tag.toUpperCase()}</span>
+      </button>
+    );
+  };
 
   return (
     <div className={styles.techSection}>
@@ -82,29 +105,12 @@ export default function ImageCarousel() {
       {/* Marquee strip */}
       <div className={styles.marqueeMask}>
         <div className={styles.marqueeTrack}>
-          {loop.map((t, i) => {
-            const isFocused = focused.name === t.name;
-            return (
-              <button
-                key={`${t.name}-${i}`}
-                type="button"
-                className={`${styles.chip} ${isFocused ? styles.chipActive : ''}`}
-                onClick={() => setFocused(t)}
-                aria-label={`Focus ${t.name}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  alt="Technology icon"
-                  src={iconUrl(t)}
-                  width={20}
-                  height={20}
-                  className={styles.chipIcon}
-                />
-                <span className={styles.chipName}>{t.name}</span>
-                <span className={styles.chipTag}>{t.tag.toUpperCase()}</span>
-              </button>
-            );
-          })}
+          <div className={styles.marqueeGroup}>
+            {TECH.map((t) => renderChip(t, `a-${t.name}`))}
+          </div>
+          <div className={styles.marqueeGroup} aria-hidden="true">
+            {TECH.map((t) => renderChip(t, `b-${t.name}`))}
+          </div>
         </div>
       </div>
 

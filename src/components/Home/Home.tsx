@@ -28,9 +28,6 @@ const BOOT_LINES: BootLine[] = [
   { tag: 'OK', text: 'mounted /dev/brain', color: SECONDARY },
   { tag: 'INFO', text: 'loaded modules: java, spring, aws', color: ACCENT },
   { tag: 'OK', text: 'kernel coffee.service active (running)', color: SECONDARY },
-  { tag: 'INFO', text: 'connected http://localhost:juan/portfolio', color: ACCENT },
-  { tag: 'OK', text: 'started caffeine.timer (every 90min)', color: SECONDARY },
-  { tag: 'OK', text: 'reached target multi-user.juan@brisbane', color: SECONDARY },
 ];
 
 function BootSequence() {

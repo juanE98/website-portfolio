@@ -49,7 +49,14 @@ $border-soft: #1e293b;
 
 .bootLine {
   opacity: 0;
+  // Keyframe declared locally — referencing the global @keyframes from a
+  // CSS Module fails because css-loader scopes the animation name.
   animation: boot-fade 600ms ease-out forwards;
+}
+
+@keyframes boot-fade {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 .bootBracket {
