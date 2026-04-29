@@ -22,7 +22,7 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Backend Software Engineer',
     company: 'Contal Services',
     bullets: [
-      'Travel booking workflows — Jetstar API integrations and orchestration.',
+      'Travel booking workflows — Jetstar API integrations.',
       'API integrations and automation across third-party travel systems.',
     ],
   },

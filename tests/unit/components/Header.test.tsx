@@ -133,11 +133,11 @@ describe('Header', () => {
     expect(window.scrollTo).toHaveBeenCalled();
   });
 
-  it('should render FPL link on home page', () => {
+  it('should not render FPL link in nav on home page', () => {
     mockPathname.mockReturnValue('/');
     render(<Header />);
 
-    expect(screen.getAllByText('FPL')).toHaveLength(2); // Desktop + Mobile
+    expect(screen.queryByText('FPL')).not.toBeInTheDocument();
   });
 });
 

@@ -246,11 +246,11 @@ export default function Projects() {
     <div className={styles.container}>
       <div className={styles.sectionHeader}>
         <div className={styles.cmdLine}>
-          <span className={styles.cmdPrompt}>$</span> systemctl status auto-haaland
+          <span className={styles.cmdPrompt}>$</span> systemctl status proj
         </div>
         <div className={styles.titleRow}>
           <span className={styles.indexNum}>04.</span>
-          <h2 className={styles.sectionTitle}>Projects</h2>
+          <h2 className={styles.sectionTitle}>Personal Projects</h2>
           <span className={styles.titleRule} aria-hidden="true" />
           <span className={styles.kicker}>A FEATURED BUILD</span>
         </div>

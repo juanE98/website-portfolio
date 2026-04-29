@@ -291,41 +291,17 @@ test.describe('FPL Page State Handling', () => {
 });
 
 test.describe('FPL Page from Homepage', () => {
-  test('should navigate to FPL page from homepage', async ({ page, isMobile }) => {
-    test.skip(!!isMobile, 'Desktop navigation test');
-
+  test('should navigate to FPL page via Projects section link', async ({ page }) => {
     await page.goto('/website-portfolio/');
     await page.waitForLoadState('networkidle');
 
-    const fplLink = page.locator('header nav a', { hasText: 'FPL' });
+    const fplLink = page.locator('#projects a[href$="/fpl"]').first();
+    await fplLink.scrollIntoViewIfNeeded();
     await expect(fplLink).toBeVisible();
     await fplLink.click();
 
     await page.waitForLoadState('networkidle');
 
-    // Should be on FPL page
-    const heading = page.locator('h2', { hasText: 'FPL Predictions' });
-    await expect(heading).toBeVisible();
-  });
-
-  test('should navigate to FPL page from mobile menu', async ({ page }) => {
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/website-portfolio/');
-    await page.waitForLoadState('networkidle');
-
-    // Open mobile menu
-    const menuIcon = page.locator('header i.bi-list');
-    await menuIcon.click();
-    await page.waitForTimeout(300);
-
-    // Target the mobile menu panel specifically
-    const mobilePanel = page.locator('[class*="mobileMenuPanel"]');
-    const fplLink = mobilePanel.locator('a', { hasText: 'FPL' });
-    await fplLink.click();
-
-    await page.waitForLoadState('networkidle');
-
-    // Should be on FPL page
     const heading = page.locator('h2', { hasText: 'FPL Predictions' });
     await expect(heading).toBeVisible();
   });

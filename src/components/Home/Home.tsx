@@ -193,7 +193,7 @@ export default function Home() {
           </p>
 
           <div className={styles.buttonRow}>
-            <a href="#experience" className={styles.btnPrimary}>
+            <a href="#projects" className={styles.btnPrimary}>
               <span>./see-my-work</span>
               <Arrow />
             </a>
@@ -204,7 +204,7 @@ export default function Home() {
 
           <div className={styles.statRow}>
             <Stat n="3+" label="Years shipping" />
-            <Stat n="AWS" label="Solutions Architect" />
+            <Stat n="AWS" label="SAA Certified" />
             <Stat n="UQ" label="CompSci grad" />
           </div>
         </div>

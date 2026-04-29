@@ -26,6 +26,9 @@ const TECH: Tech[] = [
   { name: 'Python',       tag: 'Data',     slug: 'python',     color: '3776ab', blurb: 'FPL data crunching and health-analytics scripts.' },
   { name: 'Git',          tag: 'DevOps',   slug: 'git',        color: 'f05032', blurb: 'Rebase, bisect, the lot. Trunk-based by default.' },
   { name: 'Linux',        tag: 'DevOps',   slug: 'linux',      color: 'e6edf3', blurb: 'Comfortable in a shell. Bash scripts where it counts.' },
+  { name: 'Node.js',      tag: 'Backend',  slug: 'nodedotjs',  color: '5fa04e', blurb: 'Express reverse proxy fronting a Synology NAS. Adds the RBAC layer DSM doesn’t ship with.' },
+  { name: 'GitHub Actions', tag: 'DevOps', slug: 'githubactions', color: '2088ff', blurb: 'CI/CD for build, test, and deploy of this portfolio.' },
+  { name: 'Claude Code',  tag: 'AI',       slug: 'claude',     color: 'd97757', blurb: 'My daily AI pair-programming workflow.' },
 ];
 
 const iconUrl = (tech: Tech) =>

@@ -96,8 +96,6 @@ export default function Header() {
     { fragment: 'projects', label: 'Personal Projects' },
   ];
 
-  const FPL_INDEX = homeNavItems.length; // FPL sits one slot after the section list
-
   const formatIndex = (n: number) => String(n).padStart(2, '0');
 
   const headerClass = `${styles.header} ${scrolled ? styles.scrolled : ''} ${isHidden ? styles.hidden : ''}`.trim();
@@ -166,12 +164,6 @@ export default function Header() {
                   </li>
                 );
               })}
-              <li>
-                <Link href="/fpl" className={styles.navItem}>
-                  <span className={styles.navIndex}>{formatIndex(FPL_INDEX)}</span>
-                  FPL
-                </Link>
-              </li>
             </>
           ) : (
             <>
@@ -183,12 +175,6 @@ export default function Header() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href="/fpl" className={styles.navItem}>
-                  <span className={styles.navIndex}>{formatIndex(FPL_INDEX)}</span>
-                  FPL
-                </Link>
-              </li>
             </>
           )}
         </ul>
@@ -221,12 +207,6 @@ export default function Header() {
                   {item.label}
                 </li>
               ))}
-              <li onClick={closeMenu}>
-                <Link href="/fpl">
-                  <span className={styles.navIndex}>{formatIndex(FPL_INDEX)}</span>
-                  FPL
-                </Link>
-              </li>
             </>
           ) : (
             <>
@@ -238,12 +218,6 @@ export default function Header() {
                   </Link>
                 </li>
               ))}
-              <li onClick={closeMenu}>
-                <Link href="/fpl">
-                  <span className={styles.navIndex}>{formatIndex(FPL_INDEX)}</span>
-                  FPL
-                </Link>
-              </li>
             </>
           )}
         </ul>
