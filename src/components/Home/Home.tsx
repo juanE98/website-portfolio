@@ -88,32 +88,32 @@ function PortraitStack() {
             <stop offset="100%" stopColor={ACCENT} stopOpacity="0.3" />
           </radialGradient>
         </defs>
-        <circle cx="200" cy="200" r="195" fill="url(#ringGlow)" />
-        {[195, 175, 155, 135].map((r, i) => (
-          <g key={r} opacity={0.55 - i * 0.1}>
+        <circle cx="200" cy="200" r="198" fill="url(#ringGlow)" />
+        {[197, 193, 189].map((r, i) => (
+          <g key={r} opacity={0.55 - i * 0.12}>
             <circle
               cx="200"
               cy="200"
               r={r}
               fill="none"
               stroke={ACCENT}
-              strokeWidth="0.5"
+              strokeWidth="0.3"
               strokeDasharray={`${4 + i * 8} ${20 + i * 4}`}
             />
           </g>
         ))}
         {Array.from({ length: 18 }).map((_, i) => {
           const angle = (i / 18) * Math.PI * 2;
-          const x = (200 + Math.cos(angle) * 195).toFixed(3);
-          const y = (200 + Math.sin(angle) * 195).toFixed(3);
-          return <circle key={i} cx={x} cy={y} r="1.4" fill={ACCENT} fillOpacity="0.85" />;
+          const x = (200 + Math.cos(angle) * 197).toFixed(3);
+          const y = (200 + Math.sin(angle) * 197).toFixed(3);
+          return <circle key={i} cx={x} cy={y} r="0.9" fill={ACCENT} fillOpacity="0.85" />;
         })}
         {Array.from({ length: 10 }).map((_, i) => {
           const angle = (i / 10) * Math.PI * 2 + 0.2;
-          const x1 = (200 + Math.cos(angle) * 155).toFixed(3);
-          const y1 = (200 + Math.sin(angle) * 155).toFixed(3);
-          const x2 = (200 + Math.cos(angle) * 213).toFixed(3);
-          const y2 = (200 + Math.sin(angle) * 213).toFixed(3);
+          const x1 = (200 + Math.cos(angle) * 191).toFixed(3);
+          const y1 = (200 + Math.sin(angle) * 191).toFixed(3);
+          const x2 = (200 + Math.cos(angle) * 202).toFixed(3);
+          const y2 = (200 + Math.sin(angle) * 202).toFixed(3);
           return (
             <line
               key={i}
@@ -122,7 +122,7 @@ function PortraitStack() {
               x2={x2}
               y2={y2}
               stroke={ACCENT}
-              strokeWidth="0.5"
+              strokeWidth="0.3"
               opacity="0.55"
             />
           );

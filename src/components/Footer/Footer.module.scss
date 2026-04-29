@@ -29,22 +29,6 @@
   line-height: 1.1;
 }
 
-.emailWrap {
-  margin-top: 8px;
-  color: $muted;
-}
-
-.email {
-  color: $accent;
-  text-decoration: none;
-  font-family: var(--font-jetbrains-mono), monospace;
-  font-size: 14px;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
 .socialIcons {
   display: flex;
   gap: 10px;

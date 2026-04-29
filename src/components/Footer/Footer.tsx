@@ -5,12 +5,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.topRow}>
         <div className={styles.contact}>
-          <div className={styles.heading}>Let&apos;s chat.</div>
-          <div className={styles.emailWrap}>
-            <a href="mailto:espares.julo@gmail.com" className={styles.email}>
-              espares.julo@gmail.com
-            </a>
-          </div>
+          <div className={styles.heading}>Let&apos;s connect.</div>
         </div>
         <div className={styles.socialIcons}>
           <a
