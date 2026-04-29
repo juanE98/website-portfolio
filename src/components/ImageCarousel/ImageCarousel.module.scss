@@ -180,14 +180,11 @@
 .marqueeTrack {
   display: flex;
   width: max-content;
-  -webkit-animation: carousel-marquee 40s linear infinite;
   animation: carousel-marquee 40s linear infinite;
-  will-change: transform;
-  // Force GPU compositing on iOS to keep the animation alive
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  // Hint compositing without setting a static transform.
+  // iOS WebKit will lock the GPU layer at the static identity matrix
+  // and never apply the animated transform if both are present alongside
+  // backface-visibility/will-change. The mask sets translateZ(0) for us.
 }
 
 // Two explicit halves. iOS WebKit was failing to compute the previous
@@ -203,21 +200,9 @@
   padding-right: 12px;
 }
 
-@-webkit-keyframes carousel-marquee {
-  from { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
-  to   { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
-}
-
 @keyframes carousel-marquee {
-  from { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); }
-  to   { -webkit-transform: translate3d(-50%, 0, 0); transform: translate3d(-50%, 0, 0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marqueeTrack {
-    -webkit-animation: none;
-    animation: none;
-  }
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
 // ─── Chip ───────────────────────────────────────────────────────────
