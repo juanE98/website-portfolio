@@ -22,9 +22,9 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Backend Software Engineer',
     company: 'Contal Services',
     bullets: [
-      'Internal aged-care software for healthcare providers.',
-      'Integrations with Australian government aged-care systems.',
-      'Jetstar API integrations for flight booking system',
+      'Optimised government API integration achieving 66–75% API call volume reduction, 94% network bandwidth cut, and 99% connection overhead elimination through connection pooling and two-tier caching, reducing monthly operational costs by 66%.',
+      'Delivered end-to-end Care Management application (React frontend, Java/Spring Boot backend with Hibernate ORM), automating 2 FTE workload of manual data entry while maintaining 80% unit test coverage.',
+      'Built Jetstar API integrations for flight booking with new fare rules, Special Service Request (SSR) handling, and bundle search functionality.',
     ],
   },
   {
@@ -36,8 +36,9 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Junior Software Engineer',
     company: 'Dye and Durham',
     bullets: [
-      '.NET microservices with Angular frontend.',
-      'Deployed via Kubernetes on Google Cloud Platform.',
+      'Migrated legacy monolith integration layer from SOAP to REST using a Java API client, protecting $1.5M annual revenue with zero service disruption and full government compliance.',
+      'Integrated Keycloak SSO with OAuth 2.0 authentication and self-service password reset, modernising enterprise identity and access management.',
+      'Authored sequence diagrams for complex legacy integration flows, accelerating team knowledge transfer and surfacing reusable integration patterns.',
     ],
   },
   {
@@ -49,8 +50,8 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Software Developer',
     company: 'Scriptsoft',
     bullets: [
-      'Monolithic .NET framework apps for pharma & SMB.',
-      'Started part-time at uni, transitioned to full-time on graduation.',
+      'Developed custom Power BI solution for pharmacy inventory management, enabling real-time stock tracking and automated reconciliation.',
+      'Maintained and improved internal software systems, owning the full development and deployment lifecycle for feature delivery and bug resolution.',
     ],
   },
   {
