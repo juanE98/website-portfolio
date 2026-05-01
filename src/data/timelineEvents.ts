@@ -22,9 +22,9 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Backend Software Engineer',
     company: 'Contal Services',
     bullets: [
-      'Optimised government API integration achieving 66–75% API call volume reduction, 94% network bandwidth cut, and 99% connection overhead elimination through connection pooling and two-tier caching, reducing monthly operational costs by 66%.',
-      'Delivered end-to-end Care Management application (React frontend, Java/Spring Boot backend with Hibernate ORM), automating 2 FTE workload of manual data entry while maintaining 80% unit test coverage.',
-      'Built Jetstar API integrations for flight booking with new fare rules, Special Service Request (SSR) handling, and bundle search functionality.',
+      'Optimised government API integration with connection pooling and two-tier caching — cut API calls 66–75%, bandwidth 94%, and monthly costs 66%.',
+      'Delivered end-to-end Care Management app (React, Java/Spring Boot), automating 2 FTE of manual data entry at 80% test coverage.',
+      'Built Jetstar API integrations for flight booking, fare rules, SSR handling, and bundle search.',
     ],
   },
   {
@@ -36,9 +36,9 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Junior Software Engineer',
     company: 'Dye and Durham',
     bullets: [
-      'Migrated legacy monolith integration layer from SOAP to REST using a Java API client, protecting $1.5M annual revenue with zero service disruption and full government compliance.',
-      'Integrated Keycloak SSO with OAuth 2.0 authentication and self-service password reset, modernising enterprise identity and access management.',
-      'Authored sequence diagrams for complex legacy integration flows, accelerating team knowledge transfer and surfacing reusable integration patterns.',
+      'Migrated legacy SOAP integration layer to REST via a Java API client, protecting $1.5M annual revenue with zero downtime.',
+      'Integrated Keycloak SSO with OAuth 2.0 and self-service password reset, modernising enterprise IAM.',
+      'Authored sequence diagrams for legacy integration flows, accelerating team knowledge transfer.',
     ],
   },
   {
@@ -50,8 +50,8 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Software Developer',
     company: 'Scriptsoft',
     bullets: [
-      'Developed custom Power BI solution for pharmacy inventory management, enabling real-time stock tracking and automated reconciliation.',
-      'Maintained and improved internal software systems, owning the full development and deployment lifecycle for feature delivery and bug resolution.',
+      'Built a custom Power BI solution for pharmacy inventory — real-time stock tracking and automated reconciliation.',
+      'Maintained internal systems end-to-end, owning the full dev and deployment lifecycle.',
     ],
   },
   {
