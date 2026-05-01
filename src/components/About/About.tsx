@@ -38,7 +38,7 @@ export default function About() {
             <p>
               Hi, I&apos;m Juan. I&apos;m a <strong>software engineer</strong> based in Brisbane with
               over 3 years of experience. I studied Computer Science at the University of Queensland
-              after a detour through pharmaceutics, which is probably why I still gravitate toward
+              after a detour through pharmacy, which is probably why I still gravitate toward
               health-related work. I picked up my <span className={styles.accent}>AWS Solutions Architect Associate</span>{' '}
                along the way.
             </p>

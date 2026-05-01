@@ -23,7 +23,7 @@ export const timelineEvents: TimelineEvent[] = [
     company: 'Contal Services',
     bullets: [
       'Optimised government API integration with connection pooling and two-tier caching — cut API calls 66–75%, bandwidth 94%, and monthly costs 66%.',
-      'Delivered end-to-end Care Management app (React, Java/Spring Boot), automating 2 FTE of manual data entry at 80% test coverage.',
+      'Delivered end-to-end Care Management app (React, Java/Spring Boot), automating 2 FTE of manual data entry.',
       'Built Jetstar API integrations for flight booking, fare rules, SSR handling, and bundle search.',
     ],
   },
@@ -36,7 +36,7 @@ export const timelineEvents: TimelineEvent[] = [
     role: 'Junior Software Engineer',
     company: 'Dye and Durham',
     bullets: [
-      'Migrated legacy SOAP integration layer to REST via a Java API client, protecting $1.5M annual revenue with zero downtime.',
+      'Migrated legacy SOAP integration layer to REST via a Java API client, protecting a major revenue stream with zero downtime.',
       'Integrated Keycloak SSO with OAuth 2.0 and self-service password reset, modernising enterprise IAM.',
       'Authored sequence diagrams for legacy integration flows, accelerating team knowledge transfer.',
     ],
@@ -62,7 +62,7 @@ export const timelineEvents: TimelineEvent[] = [
     period: '2019 — 2022',
     role: 'Bachelor of Computer Science',
     company: 'University of Queensland',
-    bullets: ['Pivoted from pharmaceutics. Specialised in software engineering.'],
+    bullets: ['Pivoted from pharmacy. Specialised in software engineering.'],
   },
   {
     title: 'Pharmacy Assistant',
