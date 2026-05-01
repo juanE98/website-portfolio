@@ -81,9 +81,10 @@ export default function FplPredictions() {
               rel="noopener noreferrer"
             >
               auto-haaland
-            </a>{' '}
-            — a Python pipeline I run weekly that ingests fixtures, form, and
-            xG data to rank players by expected points.
+            </a>
+            . A Python pipeline that runs automatically before each gameweek.
+            It ingests fixtures, form, and xG data to rank players by expected
+            points.
           </p>
         </Reveal>
 
