@@ -148,7 +148,7 @@ test.describe('FPL Page Controls', () => {
   });
 
   test('should display upcoming gameweek label', async ({ page }) => {
-    await expect(page.locator('text=Gameweek')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('Gameweek', { exact: true })).toBeVisible({ timeout: 10000 });
     await expect(page.getByText(MOCK_GAMEWEEK.toString(), { exact: true })).toBeVisible();
   });
 
@@ -164,7 +164,7 @@ test.describe('FPL Page Controls', () => {
     const midButton = page.locator('button', { hasText: 'MID' });
 
     // Wait for gameweek label to appear
-    await expect(page.locator('text=Gameweek')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText('Gameweek', { exact: true })).toBeVisible({ timeout: 10000 });
 
     await midButton.click();
 
