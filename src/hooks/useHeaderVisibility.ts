@@ -9,7 +9,7 @@ export function useHeaderVisibility() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const st = document.documentElement.scrollTop;
+      const st = window.scrollY;
 
       if (st > lastScrollTopRef.current && st > headerHeightRef.current) {
         // Scrolling down and past header height
@@ -22,7 +22,7 @@ export function useHeaderVisibility() {
       lastScrollTopRef.current = st <= 0 ? 0 : st;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);

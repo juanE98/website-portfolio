@@ -54,6 +54,8 @@ export default function ImageCarousel() {
           src={iconUrl(t)}
           width={20}
           height={20}
+          loading="lazy"
+          decoding="async"
           className={styles.chipIcon}
         />
         <span className={styles.chipName}>{t.name}</span>
@@ -89,6 +91,8 @@ export default function ImageCarousel() {
             src={iconUrl(focused)}
             width={40}
             height={40}
+            loading="lazy"
+            decoding="async"
             className={styles.focusIcon}
           />
         </div>

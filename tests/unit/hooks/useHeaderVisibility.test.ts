@@ -1,28 +1,14 @@
 import { renderHook, act } from '@testing-library/react';
 import { useHeaderVisibility } from '@/hooks/useHeaderVisibility';
 
+// window.scrollY is defined as writable in jest.setup.ts
+const setScrollY = (value: number) => {
+  (window as { scrollY: number }).scrollY = value;
+};
+
 describe('useHeaderVisibility', () => {
-  const originalScrollTop = Object.getOwnPropertyDescriptor(
-    document.documentElement,
-    'scrollTop'
-  );
-
   beforeEach(() => {
-    Object.defineProperty(document.documentElement, 'scrollTop', {
-      value: 0,
-      writable: true,
-      configurable: true,
-    });
-  });
-
-  afterEach(() => {
-    if (originalScrollTop) {
-      Object.defineProperty(
-        document.documentElement,
-        'scrollTop',
-        originalScrollTop
-      );
-    }
+    setScrollY(0);
   });
 
   it('should start with header visible', () => {
@@ -34,11 +20,7 @@ describe('useHeaderVisibility', () => {
     const { result } = renderHook(() => useHeaderVisibility());
 
     act(() => {
-      Object.defineProperty(document.documentElement, 'scrollTop', {
-        value: 100,
-        writable: true,
-        configurable: true,
-      });
+      setScrollY(100);
       window.dispatchEvent(new Event('scroll'));
     });
 
@@ -50,11 +32,7 @@ describe('useHeaderVisibility', () => {
 
     // First scroll down
     act(() => {
-      Object.defineProperty(document.documentElement, 'scrollTop', {
-        value: 100,
-        writable: true,
-        configurable: true,
-      });
+      setScrollY(100);
       window.dispatchEvent(new Event('scroll'));
     });
 
@@ -62,11 +40,7 @@ describe('useHeaderVisibility', () => {
 
     // Then scroll up
     act(() => {
-      Object.defineProperty(document.documentElement, 'scrollTop', {
-        value: 50,
-        writable: true,
-        configurable: true,
-      });
+      setScrollY(50);
       window.dispatchEvent(new Event('scroll'));
     });
 
@@ -77,11 +51,7 @@ describe('useHeaderVisibility', () => {
     const { result } = renderHook(() => useHeaderVisibility());
 
     act(() => {
-      Object.defineProperty(document.documentElement, 'scrollTop', {
-        value: 30,
-        writable: true,
-        configurable: true,
-      });
+      setScrollY(30);
       window.dispatchEvent(new Event('scroll'));
     });
 

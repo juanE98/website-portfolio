@@ -61,55 +61,6 @@ a {
   color: #fff;
 }
 
-@keyframes slideInLeft {
-  from { transform: translateX(-100%); opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
-}
-
-@keyframes slideInRight {
-  from { transform: translateX(100%);  opacity: 0; }
-  to   { transform: translateX(0);     opacity: 1; }
-}
-
-@keyframes slideOutLeft {
-  from { transform: translateX(0);     opacity: 1; }
-  to   { transform: translateX(-100%); opacity: 0; }
-}
-
-@keyframes slideOutRight {
-  from { transform: translateX(0);     opacity: 1; }
-  to   { transform: translateX(100%);  opacity: 0; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(20px); }
-}
-
-@keyframes boot-fade {
-  from { opacity: 0; transform: translateX(-6px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes caret-blink {
-  50% { opacity: 0; }
-}
-
-@keyframes scroll-line {
-  0%, 100% { transform: scaleY(0.4); transform-origin: top; }
-  50%      { transform: scaleY(1);   transform-origin: top; }
-}
-
-@keyframes marquee {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
-
 .menu-icon {
   color: $text;
 }
