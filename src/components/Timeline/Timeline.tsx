@@ -1,10 +1,25 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, RefObject } from 'react';
 import { useScrollVisibility } from '@/hooks/useScrollVisibility';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { timelineEvents } from '@/data/timelineEvents';
 import styles from './Timeline.module.scss';
+
+// Isolated so the per-frame scroll progress updates only re-render this
+// one div, not the whole timeline list.
+function SpineLit({ wrapRef }: { wrapRef: RefObject<HTMLDivElement | null> }) {
+  const progress = useScrollProgress(wrapRef);
+  const scale = Math.max(0, Math.min(1, (progress - 0.1) * 1.4));
+
+  return (
+    <div
+      className={styles.spineLit}
+      aria-hidden="true"
+      style={{ transform: `scaleY(${scale})` }}
+    />
+  );
+}
 
 export default function Timeline() {
   const containerRef = useScrollVisibility({
@@ -12,12 +27,6 @@ export default function Timeline() {
     visibilityThreshold: 0.2,
   });
   const wrapRef = useRef<HTMLDivElement>(null);
-  const progress = useScrollProgress(wrapRef);
-
-  const litHeight = `calc((100% - 16px) * ${Math.max(
-    0,
-    Math.min(1, (progress - 0.1) * 1.4)
-  )})`;
 
   return (
     <div className={styles.timelineContainer} ref={containerRef}>
@@ -38,11 +47,7 @@ export default function Timeline() {
         {/* dim spine */}
         <div className={styles.spine} aria-hidden="true" />
         {/* lit overlay spine */}
-        <div
-          className={styles.spineLit}
-          aria-hidden="true"
-          style={{ height: litHeight }}
-        />
+        <SpineLit wrapRef={wrapRef} />
 
         {timelineEvents.map((event, index) => {
           const isEdu = event.type === 'edu';
@@ -53,7 +58,6 @@ export default function Timeline() {
               className={`${styles.timelineItem} ${sideClass} ${
                 isEdu ? styles.edu : styles.work
               }`}
-              style={{ animationDelay: `${index * 80}ms` }}
             >
               {/* node circle */}
               <div className={styles.node} aria-hidden="true">

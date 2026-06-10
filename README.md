@@ -33,4 +33,13 @@ The `/fpl` page renders predictions from a separate serverless backend. Configur
 
 ## Deployment
 
-CI/CD via GitHub Actions. Pushes to `main` build the static export and deploy it to GitHub Pages.
+CI/CD via GitHub Actions. Pushes to `main` build the static export and deploy it to GitHub Pages. The workflow runs with read-only permissions by default; only the deploy job holds the elevated `pages: write` / `id-token: write` scopes.
+
+## Security
+
+GitHub Pages can't set HTTP response headers, so security headers are delivered as `<meta>` tags in the root layout:
+
+- **Content-Security-Policy** — locked-down `default-src 'self'` policy with explicit allowances for the icon CDN (`img-src`) and the FPL API origin (`connect-src`, derived from `NEXT_PUBLIC_FPL_API_URL` at build time). `'unsafe-inline'` scripts are required by Next.js hydration on a static export.
+- **Referrer-Policy** — `strict-origin-when-cross-origin`.
+
+Dependencies are kept CVE-free via `npm audit`, with an `overrides` pin in `package.json` where a transitive dependency needs a floor version.

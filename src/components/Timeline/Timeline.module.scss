@@ -84,9 +84,15 @@
   top: 8px;
   left: 7px;
   width: 1px;
+  height: calc(100% - 16px);
   background: linear-gradient(180deg, $accent, rgba(34, 211, 238, 0.33));
   box-shadow: 0 0 8px rgba(34, 211, 238, 0.53);
-  transition: height 120ms linear;
+  // Grow via scaleY, not height: transform is composited, so the per-frame
+  // scroll updates never trigger layout.
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 120ms linear;
+  will-change: transform;
   pointer-events: none;
 }
 
@@ -277,14 +283,11 @@
   }
 
   .timelineItem {
-    transition: none;
-    transform: none;
-    opacity: 1;
+    transform: translateY(12px);
+    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
 
-    &:global(.in-view),
     &:global(.out-of-view) {
-      opacity: 1;
-      transform: none;
+      transform: translateY(12px);
     }
   }
 }

@@ -1,89 +1,70 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseScrollVisibilityOptions {
   selector: string;
   visibilityThreshold?: number;
 }
 
+// Fine-grained steps so the observer fires close to the moment the
+// enter/exit bands below are crossed.
+const THRESHOLD_STEPS = Array.from({ length: 21 }, (_, i) => i / 20);
+
 export function useScrollVisibility({
   selector,
   visibilityThreshold = 0.3
 }: UseScrollVisibilityOptions) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const visibleElementsRef = useRef<Set<HTMLElement>>(new Set());
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isMobileRef = useRef(false);
 
-  const checkVisibility = useCallback(() => {
+  useEffect(() => {
     const parentElement = containerRef.current;
     if (!parentElement) return;
 
-    const elements = parentElement.querySelectorAll(selector);
-    const windowHeight = window.innerHeight;
+    const elements = Array.from(
+      parentElement.querySelectorAll<HTMLElement>(selector)
+    );
+    if (elements.length === 0) return;
 
-    elements.forEach((element) => {
-      const htmlElement = element as HTMLElement;
-      const rect = htmlElement.getBoundingClientRect();
-      const elementHeight = rect.height;
+    const enterAt = visibilityThreshold;
+    // Exit at a lower ratio than we enter: an element sitting on the enter
+    // boundary doesn't flip classes on every small scroll jitter.
+    const exitAt = visibilityThreshold / 2;
 
-      // Calculate how much of the element is visible
-      const visibleTop = Math.max(0, rect.top);
-      const visibleBottom = Math.min(windowHeight, rect.bottom);
-      const visibleHeight = Math.max(0, visibleBottom - visibleTop);
-      const visibleRatio = visibleHeight / elementHeight;
+    const visibleElements = new Set<HTMLElement>();
 
-      const isInView = visibleRatio >= visibilityThreshold;
-      const wasInView = visibleElementsRef.current.has(htmlElement);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const element = entry.target as HTMLElement;
+          const elementHeight = entry.boundingClientRect.height;
+          const viewportHeight = entry.rootBounds?.height ?? window.innerHeight;
+          // Measure visibility against whichever is smaller — an element
+          // taller than the viewport can never reach a raw ratio of 1.
+          const limit = Math.min(elementHeight, viewportHeight);
+          const visibleRatio =
+            limit > 0 ? entry.intersectionRect.height / limit : 0;
 
-      if (isInView && !wasInView) {
-        // Element entering viewport
-        htmlElement.classList.remove('out-of-view');
-        htmlElement.classList.add('in-view');
-        visibleElementsRef.current.add(htmlElement);
-      } else if (!isInView && wasInView) {
-        // Element leaving viewport
-        htmlElement.classList.remove('in-view');
-        htmlElement.classList.add('out-of-view');
-        visibleElementsRef.current.delete(htmlElement);
-      }
-    });
+          const wasInView = visibleElements.has(element);
+
+          if (!wasInView && visibleRatio >= enterAt) {
+            element.classList.remove('out-of-view');
+            element.classList.add('in-view');
+            visibleElements.add(element);
+          } else if (wasInView && visibleRatio < exitAt) {
+            element.classList.remove('in-view');
+            element.classList.add('out-of-view');
+            visibleElements.delete(element);
+          }
+        });
+      },
+      { threshold: THRESHOLD_STEPS }
+    );
+
+    elements.forEach((element) => observer.observe(element));
+
+    return () => observer.disconnect();
   }, [selector, visibilityThreshold]);
-
-  useEffect(() => {
-    isMobileRef.current = window.innerWidth <= 768;
-
-    const handleScroll = () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      const delay = isMobileRef.current ? 32 : 16;
-
-      scrollTimeoutRef.current = setTimeout(() => {
-        checkVisibility();
-      }, delay);
-    };
-
-    const handleResize = () => {
-      isMobileRef.current = window.innerWidth <= 768;
-    };
-
-    // Initial check
-    checkVisibility();
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [checkVisibility]);
 
   return containerRef;
 }
