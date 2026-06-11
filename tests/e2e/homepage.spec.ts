@@ -327,6 +327,26 @@ test.describe('Technologies Section (Image Carousel)', () => {
     await expect(firstIcon).toHaveAttribute('alt', 'Technology icon');
   });
 
+  test('should eagerly load all chip icons on a phone-sized viewport', async ({ page }) => {
+    // Regression: loading="lazy" inside the transform-animated marquee left
+    // icons that start off-screen (Docker first, on phones) loading late or
+    // never on real devices.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/website-portfolio/');
+    await page.waitForLoadState('networkidle');
+
+    await expect(page.locator('#technologies img[loading="lazy"]')).toHaveCount(0);
+
+    const unloaded = await page.evaluate(() =>
+      Array.from(
+        document.querySelectorAll<HTMLImageElement>('#technologies img')
+      )
+        .filter((img) => !(img.complete && img.naturalWidth > 0))
+        .map((img) => img.src)
+    );
+    expect(unloaded).toEqual([]);
+  });
+
   test('marquee should keep animating under prefers-reduced-motion', async ({ page }) => {
     // Regression: a blanket reduced-motion rule once zeroed animation-duration
     // globally, freezing the marquee for users with OS-level reduce motion.
