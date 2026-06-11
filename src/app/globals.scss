@@ -139,11 +139,15 @@ p {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  // Collapse transitions (scroll reveals, hovers) but leave keyframe
+  // animations alone: ambient self-running effects (carousel marquee,
+  // caret blink) are core content here, and zeroing animation-duration
+  // freezes the marquee on its first frame for anyone with an OS-level
+  // reduce-motion setting. Scroll-driven reveals are also disabled in
+  // useScrollVisibility under this media query.
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }

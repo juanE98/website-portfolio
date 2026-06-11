@@ -26,6 +26,24 @@ export function useScrollVisibility({
     );
     if (elements.length === 0) return;
 
+    const reveal = (element: HTMLElement) => {
+      element.classList.remove('out-of-view');
+      element.classList.add('in-view');
+    };
+
+    // Reveals are pure decoration: under reduced motion just show
+    // everything and skip the observer entirely.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      elements.forEach(reveal);
+      return;
+    }
+
+    // On mobile, reveal each element once and stop watching it. Re-hiding
+    // content as it leaves the viewport forces every fast upward flick to
+    // re-run entry animations mid-scroll, which reads as glitchy under
+    // momentum scrolling.
+    const revealOnce = window.matchMedia('(max-width: 768px)').matches;
+
     const enterAt = visibilityThreshold;
     // Exit at a lower ratio than we enter: an element sitting on the enter
     // boundary doesn't flip classes on every small scroll jitter.
@@ -48,10 +66,10 @@ export function useScrollVisibility({
           const wasInView = visibleElements.has(element);
 
           if (!wasInView && visibleRatio >= enterAt) {
-            element.classList.remove('out-of-view');
-            element.classList.add('in-view');
+            reveal(element);
             visibleElements.add(element);
-          } else if (wasInView && visibleRatio < exitAt) {
+            if (revealOnce) observer.unobserve(element);
+          } else if (!revealOnce && wasInView && visibleRatio < exitAt) {
             element.classList.remove('in-view');
             element.classList.add('out-of-view');
             visibleElements.delete(element);

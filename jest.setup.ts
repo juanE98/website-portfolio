@@ -12,6 +12,22 @@ Object.defineProperty(window, 'scrollY', {
   writable: true,
 });
 
+// Mock matchMedia (no media queries match by default)
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  configurable: true,
+  value: jest.fn((query: string) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+});
+
 // Mock IntersectionObserver
 class MockIntersectionObserver {
   observe = jest.fn();

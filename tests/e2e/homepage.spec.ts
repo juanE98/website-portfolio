@@ -326,6 +326,60 @@ test.describe('Technologies Section (Image Carousel)', () => {
     await expect(firstIcon).toBeVisible();
     await expect(firstIcon).toHaveAttribute('alt', 'Technology icon');
   });
+
+  test('marquee should keep animating under prefers-reduced-motion', async ({ page }) => {
+    // Regression: a blanket reduced-motion rule once zeroed animation-duration
+    // globally, freezing the marquee for users with OS-level reduce motion.
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+
+    const track = page.locator('#technologies [class*="marqueeTrack"]');
+    const readX = () =>
+      track.evaluate((el) => {
+        const t = getComputedStyle(el).transform;
+        return t === 'none' ? 0 : new DOMMatrixReadOnly(t).m41;
+      });
+
+    const before = await readX();
+    await page.waitForTimeout(1200);
+    const after = await readX();
+    expect(Math.abs(after - before)).toBeGreaterThan(1);
+  });
+});
+
+test.describe('Mobile scroll reveals', () => {
+  test('revealed sections stay visible when scrolling back up fast', async ({ page }) => {
+    // Phone-sized viewport before load so the hook mounts in
+    // reveal-once mode (max-width: 768px)
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/website-portfolio/');
+    await page.waitForLoadState('networkidle');
+
+    // Walk down the page so every section reveals
+    await page.evaluate(async () => {
+      for (let y = 0; y <= document.body.scrollHeight; y += 350) {
+        window.scrollTo(0, y);
+        await new Promise((resolve) => setTimeout(resolve, 40));
+      }
+    });
+    await page.waitForTimeout(600);
+
+    // Jump straight back up, as a fast flick would
+    await page.evaluate(() =>
+      document.querySelector('#about')?.scrollIntoView()
+    );
+
+    // Content must already be visible on arrival — no re-running the
+    // entry animation (read state immediately; retrying assertions would
+    // mask a late fade-in)
+    const state = await page
+      .locator('#about [class*="proseColumn"]')
+      .evaluate((el) => ({
+        outOfView: el.classList.contains('out-of-view'),
+        opacity: getComputedStyle(el).opacity,
+      }));
+    expect(state.outOfView).toBe(false);
+    expect(state.opacity).toBe('1');
+  });
 });
 
 test.describe('About Section', () => {
