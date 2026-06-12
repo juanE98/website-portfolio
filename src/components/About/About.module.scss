@@ -211,13 +211,20 @@
 }
 
 @media (max-width: 768px) {
-  // Vertical-only, shorter reveals: horizontal slides risk overflow on
-  // narrow screens and long travel reads as jank under momentum scrolling.
+  // Vertical-only reveals: horizontal slides risk overflow on narrow screens.
+  // A gentle upward rise on a decelerating ease-out-expo curve (shared with the
+  // FPL reveals) glides and settles instead of snapping, reading smoother under
+  // momentum scrolling than the short ease-out it replaces. Mobile is reveal-once
+  // (see useScrollVisibility), so only the in-view direction runs; will-change
+  // promotes a compositor layer so the fade stays crisp on low-end devices. The
+  // out-of-view rule is inert here but kept for parity with desktop.
   .proseColumn.reveal,
   .factsColumn.reveal,
   .sectionHeader.reveal {
-    transform: translateY(14px);
-    transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+    transform: translateY(16px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 
     &:global(.in-view) {
       opacity: 1;
@@ -226,8 +233,8 @@
 
     &:global(.out-of-view) {
       opacity: 0;
-      transform: translateY(14px);
-      transition-duration: 0.3s;
+      transform: translateY(16px);
+      transition-duration: 0.4s;
     }
   }
 }
