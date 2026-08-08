@@ -1,5 +1,5 @@
 # Website Portfolio
-![Next.js](https://img.shields.io/badge/next.js-15-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=white)
+![Next.js](https://img.shields.io/badge/next.js-16-%23000000.svg?style=for-the-badge&logo=next.js&logoColor=white)
 ![React](https://img.shields.io/badge/react-19-%2361DAFB.svg?style=for-the-badge&logo=react&logoColor=black)
 ![TypeScript](https://img.shields.io/badge/typescript-5.7-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Build Status](https://github.com/juanE98/website-portfolio/actions/workflows/deploy.yml/badge.svg)
@@ -24,8 +24,10 @@ If the browser still shows old content after pulling new changes, clear the Next
 
 ## Testing
 
+- `npm audit` - fail if any installed dependency has a known vulnerability.
+- `npm run lint` - run ESLint with the Next.js Core Web Vitals and TypeScript rules.
 - `npm test` — Jest unit tests (`tests/unit/`).
-- `npm run test:e2e` — Playwright E2E tests (`tests/e2e/`).
+- `npm run test:e2e` — Playwright desktop and mobile regression tests (`tests/e2e/`).
 
 ## FPL Predictions
 

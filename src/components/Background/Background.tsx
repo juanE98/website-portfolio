@@ -1,6 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import {
+  useEffect,
+  useRef,
+  useSyncExternalStore,
+  type CSSProperties,
+} from 'react';
 
 type Props = {
   accent?: string;
@@ -16,22 +21,26 @@ function hexA(hex: string, a: number): string {
   return `rgba(${r},${g},${b},${a})`;
 }
 
-function isTouch(): boolean {
+function getMotionEnabled(): boolean {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
-  return window.matchMedia('(hover: none)').matches;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const touch = window.matchMedia('(hover: none)').matches;
+  return !reduced && !touch;
+}
+
+function subscribeToMotionPreference(onStoreChange: () => void): () => void {
+  if (typeof window === 'undefined' || !window.matchMedia) return () => {};
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  reduced.addEventListener?.('change', onStoreChange);
+  return () => reduced.removeEventListener?.('change', onStoreChange);
 }
 
 function useMotionEnabled(): boolean {
-  const [enabled, setEnabled] = useState(false);
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setEnabled(!reduced.matches && !isTouch());
-    const update = () => setEnabled(!reduced.matches && !isTouch());
-    reduced.addEventListener?.('change', update);
-    return () => reduced.removeEventListener?.('change', update);
-  }, []);
-  return enabled;
+  return useSyncExternalStore(
+    subscribeToMotionPreference,
+    getMotionEnabled,
+    () => false
+  );
 }
 
 export default function Background({
