@@ -200,7 +200,7 @@ export default function Home() {
           </div>
 
           <div className={styles.statRow}>
-            <Stat n="3+" label="Years shipping" />
+            <Stat n="4+" label="Years shipping" />
             <Stat n="AWS" label="SAA Certified" />
             <Stat n="UQ" label="CompSci grad" />
           </div>
